@@ -1,100 +1,115 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+import Features from "@/components/Features";
+import Navbar from "@/components/navigation/navbar";
+import { auth } from "@/auth";
+
+const features = [
+  {
+    idx: 1,
+    title: "Effortless Event Creation",
+    description:
+      "Organize workshops, hackathons, and community meetups in seconds.",
+    bg: "bg-gradient-to-r from-indigo-100 to-cyan-100",
+    numGradient: "bg-gradient-to-r from-indigo-500 to-cyan-500",
+  },
+  {
+    idx: 2,
+    title: "Real-time Collaboration",
+    description:
+      "Create groups, share events, and build meaningful connections that last.",
+    bg: "bg-gradient-to-r from-purple-100 to-pink-100",
+    numGradient: "bg-gradient-to-r from-purple-500 to-pink-500",
+  },
+  {
+    idx: 3,
+    title: "Seamless Notifications",
+    description: "Keep your community updated with instant notifications.",
+    bg: "bg-gradient-to-r from-green-100 to-teal-100",
+    numGradient: "bg-gradient-to-r from-green-500 to-teal-500",
+  },
+  // {
+  //   title: "Built for Scale",
+  //   description:
+  //     "Expand effortlessly with a platform that grows with your community.",
+  //   bg: "bg-gradient-to-r from-orange-100 to-yellow-100",
+  //   numGradient: "bg-gradient-to-r from-orange-500 to-yellow-500",
+  // },
+];
+
+export default async function Home() {
+  const session = await auth();
+  console.log(session)
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    // bg-gradient-to-tr from-blue-100 via-white to-indigo-100
+    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-white to-indigo-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
+      <Navbar />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+      {/* Hero Section */}
+      <main className="container mx-auto px-10 py-16 text-center">
+        <h2 className="primary-text-gradient font-robotoslab text-6xl font-extrabold leading-tight max-sm:text-3xl">
+          Build. Manage. Grow Your Community.
+        </h2>
+        <p className="mt-6 text-lg text-gray-600 max-sm:text-sm">
+          Empower your community with cutting-edge tools to grow, manage, and
+          succeed.
+        </p>
+        <Link href="/auth/signup" className="btn-primary mt-8 inline-block">
+          Get Started for Free
+        </Link>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* About Section */}
+      <section className="container mx-auto px-10 py-16 text-center">
+        <h2 className="inline-block w-auto bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text font-robotoslab text-6xl font-extrabold leading-tight text-transparent max-sm:text-3xl">
+          Why Choose Us?
+        </h2>
+        <p className="mt-6 text-lg text-gray-600">
+          Build powerful communities with tools designed to scale. From event
+          creation to real-time updates, we help you achieve your goals with
+          ease.
+        </p>
+      </section>
+
+      {/* Features Section */}
+      <section className="mx-auto px-10 py-16 text-center max-sm:px-1">
+        <h2 className="mb-10 inline-block w-auto bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-center font-robotoslab text-6xl font-extrabold leading-tight text-transparent max-sm:text-3xl">
+          Features That Matter
+        </h2>
+
+        <div className="max-container flex flex-wrap justify-center gap-9">
+          {features.map((feature) => (
+            // <div
+            //   key={idx}
+            //   className={`${feature.bg} flex-col rounded-lg p-8 shadow-md transition-transform hover:scale-105`}
+            // >
+            //   <div className="mb-5 flex items-center max-md:flex-col max-md:items-start">
+            //     <h3
+            //       className={`${feature.numGradient} mr-5 bg-clip-text text-5xl font-bold text-transparent`}
+            //     >
+            //       {`0${idx + 1}`}
+            //     </h3>
+
+            //     <h3 className="mb-2 text-2xl font-semibold text-gray-800 max-md:text-xl">
+            //       {feature.title}
+            //     </h3>
+            //   </div>
+            //   <p className="text-gray-700">{feature.description}</p>
+            // </div>
+            <Features
+              key={feature.idx}
+              idx={feature.idx}
+              title={feature.title}
+              description={feature.description}
+              gradient={feature.numGradient}
+            />
+          ))}
+        </div>
+      </section>
+
+      <footer className="py-6 text-center text-gray-500">
+        &copy; {new Date().getFullYear()} Community Connect. All rights
+        reserved.
       </footer>
     </div>
   );
