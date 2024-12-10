@@ -5,7 +5,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
 import { signIn } from "next-auth/react";
-import routes from "@/constants/routes";
+import ROUTES from "@/constants/routes";
 
 // import signIn from "next-auth/react";
 
@@ -16,7 +16,7 @@ const SocialAuthForm = () => {
   const handleSignIn = async (provider: "github" | "google") => {
     try {
       await signIn(provider, {
-        callbackUrl: routes.home,
+        callbackUrl: ROUTES.HOME,
         redirect: false,
       });
     } catch (error) {

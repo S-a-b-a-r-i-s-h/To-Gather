@@ -37,7 +37,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <SessionProvider session={session}>
         <body
-          className={`${montserrat.className} ${robotoslab.variable} antialiased`}
+          className={`${montserrat.className} ${robotoslab.variable} h-auto bg-gradient-to-tr from-blue-100 via-white to-indigo-100 dark:from-gray-900 dark:via-black dark:to-gray-800  antialiased `}
         >
           <Toaster />
           <ThemeProvider
@@ -46,7 +46,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* <Navbar /> */}
+            <Navbar />
             {children}
           </ThemeProvider>
         </body>

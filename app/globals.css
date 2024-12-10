@@ -15,7 +15,7 @@
   }
 
   .btn-secondary {
-    @apply px-8 py-4 text-indigo-600 font-semibold border-2 border-indigo-400 rounded-full hover:bg-indigo-100 transition;
+    @apply px-8 py-4 text-indigo-600 font-semibold border-2 border-indigo-400 hover:bg-indigo-100 transition;
   }
 
   .primary-text-gradient {
@@ -293,7 +293,7 @@
   }
 
   .markdown-editor {
-    @apply prose max-w-full prose-p:m-0 dark:prose-headings:text-white prose-headings:text-dark-400 prose-p:text-dark-500 dark:prose-p:text-light-700 prose-ul:text-dark-500 dark:prose-ul:text-light-700 prose-ol:text-dark-500 dark:prose-ol:text-light-700 dark:prose-strong:text-white prose-blockquote:text-dark-500 dark:prose-blockquote:text-light-700;
+    @apply prose max-w-full prose-p:m-0 dark:prose-headings:text-white prose-headings:text-dark-400 prose-p:text-dark-500 dark:prose-p:text-light-700 prose-ul:text-dark-500 dark:prose-ul:text-light-700 prose-ol:text-dark-500 dark:prose-ol:text-light-700 dark:prose-strong:text-white prose-blockquote:text-dark-500 dark:prose-blockquote:text-light-700 prose-a:text-blue-500;
   }
 
   .tab {

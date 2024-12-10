@@ -42,11 +42,11 @@ export default async function Home() {
   console.log(session)
   return (
     // bg-gradient-to-tr from-blue-100 via-white to-indigo-100
-    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-white to-indigo-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
-      <Navbar />
+    <div className="min-h-screen border-2">
+      {/* <Navbar /> */}
 
       {/* Hero Section */}
-      <main className="container mx-auto px-10 py-16 text-center">
+      <main className="border-2 mt-20 container mx-auto px-10 py-16 text-center">
         <h2 className="primary-text-gradient font-robotoslab text-6xl font-extrabold leading-tight max-sm:text-3xl">
           Build. Manage. Grow Your Community.
         </h2>

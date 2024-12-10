@@ -48,3 +48,14 @@ export const SignUpSchema = z.object({
         message: "Password must contain at least one special character.",
       }),
   });
+
+  export const CreateCommunitySchema = z.object({
+    image: z.string(),
+    title: z
+      .string()
+      .min(5, { message: "Title is required." })
+      .max(100, { message: "Title cannot exceed 100 characters." }),
+  
+    description: z.string().min(20, { message: "Describe at least in 20 characters" }).max(1000, { message: "Description cannot exceed 500 characters." }),
+    price: z.string().min(0, { message: "Price cannot be negative." }),
+  });

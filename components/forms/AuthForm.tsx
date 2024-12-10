@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import routes from "@/constants/routes";
+import ROUTES from "@/constants/routes";
 
 interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
@@ -94,7 +94,7 @@ const AuthForm = <T extends FieldValues>({
           <p>
             Don't have an account?{" "}
             <Link
-              href={routes.sign_up}
+              href={ROUTES.SIGN_UP}
               className="paragraph-semibold primary-text-gradient"
             >
               Sign up
@@ -104,7 +104,7 @@ const AuthForm = <T extends FieldValues>({
           <p>
             Already have an account?{" "}
             <Link
-              href={routes.sign_in}
+              href={ROUTES.SIGN_IN}
               className="paragraph-semibold primary-text-gradient"
             >
               Sign in
