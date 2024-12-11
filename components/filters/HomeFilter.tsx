@@ -11,11 +11,6 @@ import { Button } from "../ui/button";
 const filters = [
   { name: "React", value: "react" },
   { name: "JavaScript", value: "javascript" },
-
-  // { name: "Newest", value: "newest" },
-  // { name: "Popular", value: "popular" },
-  // { name: "Unanswered", value: "unanswered" },
-  // { name: "Recommeded", value: "recommended" },
 ];
 
 const HomeFilter = () => {
@@ -50,7 +45,7 @@ const HomeFilter = () => {
   return (
     <div className="mt-10 hidden flex-wrap gap-3 sm:flex">
       {filters.map((filter) => (
-        <div className="relative">
+        <div key={filter.value} className="relative">
             <div className={ active === filter.value ?`absolute -inset-1 m-1 primary-bg-gradient opacity-100 blur-sm` : ""}></div>
             <Button
                 key={filter.name}

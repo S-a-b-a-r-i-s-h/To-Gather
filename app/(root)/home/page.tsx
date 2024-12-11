@@ -1,10 +1,6 @@
-import Link from "next/link";
-
-import LocalSearch from "@/components/search/LocalSearch";
-import { Button } from "@/components/ui/button";
-import ROUTES from "@/constants/routes";
-import HomeFilter from "@/components/filters/HomeFilter";
 import CommunityCard from "@/components/cards/CommunityCard";
+import HomeFilter from "@/components/filters/HomeFilter";
+import LocalSearch from "@/components/search/LocalSearch";
 
 const questions = [
   {
@@ -17,7 +13,8 @@ const questions = [
   {
     _id: "2",
     title: "How to learn JavaScript?",
-    description: "I want to learn JavaScript, can anyone help me? I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?",
+    description:
+      "I want to learn JavaScript, can anyone help me? I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?",
     members: 435,
     price: 999,
   },
@@ -44,11 +41,22 @@ const questions = [
   },
 ];
 
+// const test = async () => {
+//   try {
+//     return await api.users.getByEmail("sabrusabarish@gmail.com");
+//   } catch (error) {
+//     return handleError(error);
+//   }
+// };
+
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
+  // const result = await test();
+  // console.log(result);
+
   const { query = "", filter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {
@@ -82,7 +90,7 @@ const Home = async ({ searchParams }: SearchParams) => {
         />
       </section>
       <HomeFilter />
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 justify-items-center">
+      <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {filteredQuestions.map((question) => (
           <CommunityCard
             key={question._id}

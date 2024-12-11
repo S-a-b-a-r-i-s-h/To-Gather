@@ -61,6 +61,7 @@ const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
       />
 
       <Input
+        id="homesearch"
         type="text"
         placeholder={placeholder}
         value={searchQuery}

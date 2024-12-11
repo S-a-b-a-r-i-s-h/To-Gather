@@ -26,7 +26,7 @@ import { z } from "zod";
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
 const CommunityForm = () => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+//   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const editorRef = React.useRef<MDXEditorMethods>(null);
 
   const form = useForm({
@@ -35,7 +35,7 @@ const CommunityForm = () => {
       image: "",
       title: "",
       description: "",
-      price: "0",
+      price: "",
     },
   });
 
@@ -43,18 +43,19 @@ const CommunityForm = () => {
     console.log(data);
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+//   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = e.target.files?.[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         setImagePreview(reader.result as string);
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   };
 
   return (
+    // <div>hi</div>
     <Form {...form}>
       <form
         className="flex w-full flex-col gap-10"
@@ -68,19 +69,19 @@ const CommunityForm = () => {
               <FormLabel className="paragraph-semibold text-dark400_light800">
                 Community Image <span className="primary-text-gradient">*</span>
               </FormLabel>
-              {imagePreview && (
-                <img src={imagePreview} alt="Community Preview" width={800} height={400} className="mb-4 max-h-64 object-cover" />
-              )}
+              {/* {imagePreview && (
+                <Image src={imagePreview} alt="Community Preview" width={800} height={400} className="mb-4 max-h-64 object-cover" />
+              )} */}
               <FormControl className="">
                 <Input
                   className=" max-sm:text-[15px text-dark300_light700 no-focus min-h-[56px] border-none"
                   type="file"
                   accept="image/*"
                   {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    handleImageChange(e);
-                  }}
+                //   onChange={(e) => {
+                //     field.onChange(e);
+                //     handleImageChange(e);
+                //   }}
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
@@ -101,6 +102,7 @@ const CommunityForm = () => {
               <FormControl>
                 <Input
                   className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type = "text"
                   {...field}
                 />
               </FormControl>
@@ -116,11 +118,11 @@ const CommunityForm = () => {
           name="description"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
+              <FormLabel className="paragraph-semibold text-dark400_light800" htmlFor="desc">
                 Description <span className="primary-text-gradient">*</span>
               </FormLabel>
               <FormControl>
-                <Editor editorRef={editorRef} value={field.value} fieldChange={field.onChange} />
+                <Editor id="desc" editorRef={editorRef} value={field.value} fieldChange={field.onChange} />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 Give a brief description of your community
