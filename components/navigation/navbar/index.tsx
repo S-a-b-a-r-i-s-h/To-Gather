@@ -1,13 +1,21 @@
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-import Theme from "./Theme";
-import MobileNavigation from "./MobileNavigation";
+import { auth } from "@/auth";
+import UserAvatar from "@/components/UserAvatar";
 
-const Navbar = () => {
+import MobileNavigation from "./MobileNavigation";
+import Theme from "./Theme";
+
+interface Props{
+  route?: string;
+}
+
+const Navbar = async ({route}: Props) => {
+  const session = await auth();
   return (
-    <nav className=" flex-between bg-transparent top-0 fixed z-50 w-full gap-5 p-5 sm:px-12">
+    <nav className=" flex-between fixed top-0 z-50 w-full gap-5 bg-transparent p-5 sm:px-12">
       <Link href="/" className="flex items-center gap-1">
         {/* <Image
           src="/images/site-logo.svg"
@@ -16,14 +24,22 @@ const Navbar = () => {
           alt="DevFlow Logo"
         /> */}
 
-        <p className="text-3xl font-medium primary-text-gradient font-robotoslab">
+        <p className="primary-text-gradient font-robotoslab text-3xl font-medium">
           To-Gather
         </p>
       </Link>
 
       <div className="flex-between gap-5">
         <Theme />
-        <MobileNavigation />
+        {session?.user && (
+          <UserAvatar
+            id={session.user.id!}
+            name={session.user.name!}
+            image={session.user?.image}
+          />
+        )}
+        {route !== "/" && <MobileNavigation />}
+        {/* <MobileNavigation /> */}
       </div>
     </nav>
   );

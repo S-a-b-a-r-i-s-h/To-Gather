@@ -5,22 +5,23 @@ export interface IUser {
   username: string;
   email: string;
   bio?: string;
-  image: string;
-  location?: string;
+  image?: string;
+  userLocation?: string;
   portfolio?: string;
   github?: string;
   linkedin?: string;
   communities?: string[];
 }
 
+export interface IUserDoc extends IUser, Document {}
 const UserSchema = new Schema(
   {
     name: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     bio: { type: String },
-    image: { type: String, required: true },
-    location: { type: String },
+    image: { type: String },
+    userLocation: { type: String },
     portfolio: { type: String },
     github: { type: String },
     linkedin: { type: String },

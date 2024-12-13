@@ -14,6 +14,7 @@ export interface IEvent {
   };
 }
 
+export interface IEventDoc extends IEvent, Document {}
 const EventSchema = new Schema<IEvent>(
   {
     title: { type: String, required: true },

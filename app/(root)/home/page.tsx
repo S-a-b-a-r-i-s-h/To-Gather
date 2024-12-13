@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
 import CommunityCard from "@/components/cards/CommunityCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
@@ -54,8 +57,7 @@ interface SearchParams {
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-  // const result = await test();
-  // console.log(result);
+  const result = await auth();
 
   const { query = "", filter = "" } = await searchParams;
 
@@ -69,7 +71,7 @@ const Home = async ({ searchParams }: SearchParams) => {
     return matchesQuery && matchesFilter;
   });
 
-  return (
+  return result?.user ? (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">My Communities</h1>
@@ -102,6 +104,8 @@ const Home = async ({ searchParams }: SearchParams) => {
         ))}
       </div>
     </>
+  ) : (
+    redirect("/")
   );
 };
 

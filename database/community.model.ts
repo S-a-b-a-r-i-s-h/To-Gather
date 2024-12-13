@@ -10,6 +10,7 @@ export interface ICommunity {
   members: Types.ObjectId[];
 }
 
+export interface ICommunityDoc extends ICommunity, Document {}
 const CommunitySchema = new Schema<ICommunity>(
   {
     title: { type: String, required: true },
