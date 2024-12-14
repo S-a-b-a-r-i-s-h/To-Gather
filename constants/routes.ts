@@ -5,6 +5,8 @@ const ROUTES = {
     SIGN_UP: "/sign-up",
     CREATE_COMMUNITY: "/create-community",
     PROFILE: (id: string) => `/profile/${id}`,
+    COMMUNITY: (id: string) => `/community/${id}`,
+    COMMUNITIES: (id: string) => `/community/${id}`,
 }
 
 export default ROUTES;

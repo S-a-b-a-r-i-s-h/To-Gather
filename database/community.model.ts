@@ -6,8 +6,8 @@ export interface ICommunity {
   img: string;
   price: string;
   admin: Types.ObjectId;
-  secondaryAdmins: Types.ObjectId[];
-  members: Types.ObjectId[];
+  secondaryAdmins?: Types.ObjectId[];
+  members?: Types.ObjectId[];
 }
 
 export interface ICommunityDoc extends ICommunity, Document {}

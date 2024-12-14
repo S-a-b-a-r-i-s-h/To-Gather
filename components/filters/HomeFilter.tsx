@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
 const filters = [
-  { name: "React", value: "react" },
-  { name: "JavaScript", value: "javascript" },
+  { name: "Free", value: "free" },
+  { name: "Paid", value: "paid" },
 ];
 
 const HomeFilter = () => {
@@ -46,20 +46,26 @@ const HomeFilter = () => {
     <div className="mt-10 hidden flex-wrap gap-3 sm:flex">
       {filters.map((filter) => (
         <div key={filter.value} className="relative">
-            <div className={ active === filter.value ?`absolute -inset-1 m-1 primary-bg-gradient opacity-100 blur-sm` : ""}></div>
-            <Button
-                key={filter.name}
-                className={cn(
-                    `body-medium rounded-lg px-6 py-3 capitalize shadow-none relative`,
-                    active === filter.value
-                    ? "bg-light-800 hover:bg-light-800 text-light-500 dark:bg-dark-300 dark:hover:bg-dark-300 dark:text-light-500"
-                    : "bg-light-800 hover:bg-light-800 text-light-500 dark:bg-dark-300 dark:hover:bg-dark-300 dark:text-light-500"
-                )}
-                // className={`bg-light-800 dark:bg-dark-300 text-slate-500`}
-                onClick={() => handleTypeClick(filter.value)}
-                >
-                {filter.name}
-            </Button>
+          <div
+            className={
+              active === filter.value
+                ? `primary-bg-gradient absolute -inset-1 m-1 opacity-100 blur-sm`
+                : ""
+            }
+          ></div>
+          <Button
+            key={filter.name}
+            className={cn(
+              `body-medium rounded-lg px-6 py-3 capitalize shadow-none relative`,
+              active === filter.value
+                ? "bg-light-800 hover:bg-light-800 text-light-500 dark:bg-dark-300 dark:hover:bg-dark-300 dark:text-light-500"
+                : "bg-light-800 hover:bg-light-800 text-light-500 dark:bg-dark-300 dark:hover:bg-dark-300 dark:text-light-500"
+            )}
+            // className={`bg-light-800 dark:bg-dark-300 text-slate-500`}
+            onClick={() => handleTypeClick(filter.value)}
+          >
+            {filter.name}
+          </Button>
         </div>
       ))}
     </div>

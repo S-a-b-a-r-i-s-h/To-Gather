@@ -1,9 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MDXEditorMethods } from "@mdxeditor/editor";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
+import { toast } from "@/hooks/use-toast";
+import { createCommunity, editCommunity } from "@/lib/actions/community.action";
 import { CreateCommunitySchema } from "@/lib/validations";
 
 import { Button } from "../ui/button";
@@ -17,45 +25,78 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import Image from "next/image";
-// import Editor from "../editor";
-import { MDXEditorMethods } from "@mdxeditor/editor";
-import dynamic from "next/dynamic";
-import { z } from "zod";
 
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
-const CommunityForm = () => {
-//   const [imagePreview, setImagePreview] = useState<string | null>(null);
+interface Params {
+  community?: Community;
+  isEdit?: boolean;
+}
+const CommunityForm = ({ community, isEdit = false }: Params) => {
+  const router = useRouter();
+
+  const [imagePreview, setImagePreview] = useState<string>("");
   const editorRef = React.useRef<MDXEditorMethods>(null);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm({
     resolver: zodResolver(CreateCommunitySchema),
     defaultValues: {
-      image: "",
-      title: "",
-      description: "",
-      price: "",
+      image: community?.img || "",
+      title: community?.title || "",
+      description: community?.description || "",
+      price: community?.price || "",
     },
   });
 
-  const handleCreateCommunity = (data: z.infer<typeof CreateCommunitySchema>) => {
-    console.log(data);
+  const handleCreateCommunity = async (
+    data: z.infer<typeof CreateCommunitySchema>
+  ) => {
+    startTransition(async () => {
+      data.image = imagePreview || community?.img || "";
+
+      if (isEdit && community) {
+        const result = await editCommunity({
+          communityId: community?._id,
+          ...data,
+        });
+
+        if (result.success) {
+          toast({
+            title: "Success",
+            description: "Community updated successfully",
+          });
+
+          if (result.data) router.push(`/community/${result.data?._id}`);
+        } else {
+          toast({
+            title: "Error",
+            description: "Something went wrong",
+            variant: "destructive",
+          });
+        }
+        return;
+      }
+      const result = await createCommunity(data);
+
+      if (result.success) {
+        toast({
+          title: "Success",
+          description: "Community created successfully",
+        });
+
+        if (result.data) router.push(`/community/${result.data?._id}`);
+      } else {
+        toast({
+          title: "Error",
+          description: "Something went wrong",
+          variant: "destructive",
+        });
+      }
+    });
   };
 
-//   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const file = e.target.files?.[0];
-//     if (file) {
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         setImagePreview(reader.result as string);
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   };
-
   return (
-    // <div>hi</div>
     <Form {...form}>
       <form
         className="flex w-full flex-col gap-10"
@@ -66,22 +107,35 @@ const CommunityForm = () => {
           name="image"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
-                Community Image <span className="primary-text-gradient">*</span>
+              <FormLabel
+                className="paragraph-semibold text-dark400_light800"
+                htmlFor="image"
+              >
+                <Image
+                  src={imagePreview || community?.img || "/images/auth-dark.png"}
+                  alt="Community Image"
+                  width={140}
+                  height={70}
+                />
               </FormLabel>
-              {/* {imagePreview && (
-                <Image src={imagePreview} alt="Community Preview" width={800} height={400} className="mb-4 max-h-64 object-cover" />
-              )} */}
               <FormControl className="">
                 <Input
-                  className=" max-sm:text-[15px text-dark300_light700 no-focus min-h-[56px] border-none"
+                  className=" text-dark300_light700 no-focus min-h-[56px] border-none max-sm:text-[15px]"
                   type="file"
                   accept="image/*"
-                  {...field}
-                //   onChange={(e) => {
-                //     field.onChange(e);
-                //     handleImageChange(e);
-                //   }}
+                  id="image"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const file = e.target.files[0];
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        const base64Image = reader.result as string;
+                        setImagePreview(base64Image);
+                        form.setValue("image", base64Image);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
@@ -102,7 +156,7 @@ const CommunityForm = () => {
               <FormControl>
                 <Input
                   className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
-                  type = "text"
+                  type="text"
                   {...field}
                 />
               </FormControl>
@@ -118,11 +172,19 @@ const CommunityForm = () => {
           name="description"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
-              <FormLabel className="paragraph-semibold text-dark400_light800" htmlFor="desc">
+              <FormLabel
+                className="paragraph-semibold text-dark400_light800"
+                htmlFor="desc"
+              >
                 Description <span className="primary-text-gradient">*</span>
               </FormLabel>
               <FormControl>
-                <Editor id="desc" editorRef={editorRef} value={field.value} fieldChange={field.onChange} />
+                <Editor
+                  id="desc"
+                  editorRef={editorRef}
+                  value={field.value}
+                  fieldChange={field.onChange}
+                />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 Give a brief description of your community
@@ -157,7 +219,14 @@ const CommunityForm = () => {
             type="submit"
             className="primary-bg-gradient w-fit !text-light-900"
           >
-            Create Community
+            {isPending ? (
+              <>
+                <ReloadIcon className="mr-2 size-4 animate-spin" />
+                <span>Submitting</span>
+              </>
+            ) : (
+              <> {isEdit ? "Edit" : "Create a Community"} </>
+            )}
           </Button>
         </div>
       </form>
