@@ -1,13 +1,33 @@
+// import { Url } from "url";
+
 interface Community {
     _id: string;
     title: string;
     description: string;
+    shortDescription: string;
     img: string;
     price: string;
     admin: string;
+    secondaryAdmins: string[];
     createdAt: Date;
     updatedAt: Date;
     members: string[];
+    linkedin?: string;
+    x?: string;
+    github?: string;
+    instagram?: string;
+    whatsapp?: string;
+    website?: string;
+}
+
+interface UpdateCommunityMembersParams {
+    communityId: string;
+    actions: "add" | "remove" | "upgrade" | "downgrade";
+}
+
+interface GradeCommunityMembersParams {
+  communityId: string;
+  actions: "upgrade" | "downgrade";
 }
 
 type ActionResponse<T = null> = {
@@ -36,4 +56,5 @@ interface PaginatedSearchParams {
   query?: string;
   filter?: string;
   sort?: string;
+  id?: string;
 }

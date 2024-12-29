@@ -67,7 +67,7 @@ const MobileNavigation = async () => {
               >
                 <Button
                   type="submit"
-                  className="base-medium w-fit !bg-transparent px-4 py-3 text-black dark:text-white"
+                  className="base-medium mb-4 ml-2 w-fit !bg-transparent px-4 py-3 text-black shadow shadow-indigo-400 dark:text-white"
                 >
                   <LogOut className="size-5 text-black dark:text-white" />
                   LogOut
@@ -77,20 +77,20 @@ const MobileNavigation = async () => {
               <>
                 {/* {redirect(ROUTES.ROOT)} */}
                 <SheetClose asChild>
-                   <Link href={ROUTES.SIGN_IN}>
-                     <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
-                       <span className="primary-text-gradient">Log In</span>
-                     </Button>
-                   </Link>
-                 </SheetClose>
+                  <Link href={ROUTES.SIGN_IN}>
+                    <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
+                      <span className="primary-text-gradient">Log In</span>
+                    </Button>
+                  </Link>
+                </SheetClose>
 
-                 <SheetClose asChild>
-                   <Link href={ROUTES.SIGN_UP}>
-                     <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
-                       Sign Up
-                     </Button>
-                   </Link>
-                 </SheetClose>
+                <SheetClose asChild>
+                  <Link href={ROUTES.SIGN_UP}>
+                    <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </SheetClose>
               </>
             )}
           </div>

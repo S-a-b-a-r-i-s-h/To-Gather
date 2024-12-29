@@ -45,7 +45,14 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
       image: community?.img || "",
       title: community?.title || "",
       description: community?.description || "",
+      shortDescription: community?.shortDescription || "",
       price: community?.price || "",
+      linkedin: community?.linkedin || "",
+      x: community?.x || "",
+      github: community?.github || "",
+      instagram: community?.instagram || "", 
+      whatsapp: community?.whatsapp || "",
+      website: community?.website || "",
     },
   });
 
@@ -112,7 +119,9 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
                 htmlFor="image"
               >
                 <Image
-                  src={imagePreview || community?.img || "/images/auth-dark.png"}
+                  src={
+                    imagePreview || community?.img || "/images/auth-dark.png"
+                  }
                   alt="Community Image"
                   width={140}
                   height={70}
@@ -169,6 +178,28 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
         />
         <FormField
           control={form.control}
+          name="shortDescription"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800">
+                Short Description <span className="primary-text-gradient">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                This description will be displayed on the front page.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
@@ -192,7 +223,7 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        />     
         <FormField
           control={form.control}
           name="price"
@@ -209,6 +240,138 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 How much does it cost to join your community?, per annum
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="linkedin"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800">
+                LinkedIn
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Community LinkedIn page link
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="x"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800">
+                X
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Community X page link
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="github"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800">
+                GitHub
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Community GitHub page link
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="instagram"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800">
+                Instagram
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Community Instagram page link
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="whatsapp"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800">
+                WhatsApp
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Community WhatsApp channel or group link
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="website"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800">
+                Website
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Community Website link
               </FormDescription>
               <FormMessage />
             </FormItem>

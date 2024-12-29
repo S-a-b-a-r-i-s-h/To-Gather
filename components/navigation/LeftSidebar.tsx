@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
 const LeftSidebar = async () => {
   const session = await auth();
   const userId = session?.user?.id;
-  console.log(session)
+  console.log(session);
 
   return (
     <section className=" light-border sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-r bg-transparent p-6 pt-36 shadow-light-300 dark:shadow-none max-lg:hidden lg:w-[266px]">
@@ -36,7 +36,7 @@ const LeftSidebar = async () => {
           >
             <Button
               type="submit"
-              className="base-medium w-fit !bg-transparent px-4 py-3 text-black dark:text-white"
+              className="base-medium mb-4 ml-2 w-fit !bg-transparent px-4 py-3 text-black shadow shadow-indigo-400 dark:text-white"
             >
               <LogOut className="size-5 text-black dark:text-white" />
               LogOut

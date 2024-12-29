@@ -9,6 +9,7 @@ interface CommunityCardProps {
   title: string;
   description: string;
   members: number;
+  secondaryAdmins: number;
   price: string;
   image: string;
 }
@@ -18,6 +19,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
   title,
   description,
   members,
+  secondaryAdmins,
   price,
   image,
 }) => {
@@ -55,7 +57,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({
 
       {/* Footer Section */}
       <div className="flex justify-between px-4 pb-4 pt-2 text-sm text-black sm:text-base">
-        <p className="primary-text-gradient font-medium">Members: {members}</p>
+        <p className="primary-text-gradient font-medium">Members: {members + secondaryAdmins + 1}</p>
         {price !== "0" ? (
           <p className="bg-gradient-to-r from-amber-200 to-yellow-500 bg-clip-text font-medium text-transparent">
             &#8377;{price}

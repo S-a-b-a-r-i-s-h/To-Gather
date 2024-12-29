@@ -7,6 +7,7 @@ const ROUTES = {
     PROFILE: (id: string) => `/profile/${id}`,
     COMMUNITY: (id: string) => `/community/${id}`,
     COMMUNITIES: (id: string) => `/community/${id}`,
+    EDITCOMMUNITY: (id: string) => `/community/${id}/edit`,
 }
 
 export default ROUTES;

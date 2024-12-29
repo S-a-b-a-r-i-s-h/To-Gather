@@ -19,8 +19,15 @@ interface AuthCredentials {
 interface CreateCommunityParams {
   title: string;
   description: string;
+  shortDescription: string;
   image: string;
   price: string;
+  linkedin?: string;
+  x?: string;
+  github?: string;
+  instagram?: string;
+  whatsapp?: string;
+  website?: string;
 }
 
 interface EditCommunityParams extends CreateCommunityParams {

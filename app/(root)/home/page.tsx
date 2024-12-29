@@ -2,56 +2,9 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import CommunityCard from "@/components/cards/CommunityCard";
-import HomeFilter from "@/components/filters/HomeFilter";
+// import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
-import { getCommunities } from "@/lib/actions/community.action";
-
-// const questions = [
-//   {
-//     _id: "1",
-//     title: "How to learn React?",
-//     description: "I want to learn React, can anyone help me?",
-//     members: 123,
-//     price: 0,
-//   },
-//   {
-//     _id: "2",
-//     title: "How to learn JavaScript?",
-//     description:
-//       "I want to learn JavaScript, can anyone help me? I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?I want to learn JavaScript, can anyone help me?",
-//     members: 435,
-//     price: 999,
-//   },
-//   {
-//     _id: "3",
-//     title: "How to learn JavaScript?",
-//     description: "I want to learn JavaScript, can anyone help me?",
-//     members: 435,
-//     price: 999,
-//   },
-//   {
-//     _id: "4",
-//     title: "How to learn JavaScript?",
-//     description: "I want to learn JavaScript, can anyone help me?",
-//     members: 435,
-//     price: 999,
-//   },
-//   {
-//     _id: "5",
-//     title: "How to learn JavaScript?",
-//     description: "I want to learn JavaScript, can anyone help me?",
-//     members: 435,
-//     price: 999,
-//   },
-// ];
-
-// const test = async () => {
-//   try {
-//     return await api.users.getByEmail("sabrusabarish@gmail.com");
-//   } catch (error) {
-//     return handleError(error);
-//   }
-// };
+import { getCommunitiesByUser } from "@/lib/actions/community.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -59,28 +12,27 @@ interface SearchParams {
 
 const Home = async ({ searchParams }: SearchParams) => {
   const result = await auth();
+  const { user } = result || {};
 
   const { page, pageSize, query, filter } = await searchParams;
 
-  const { success, data, error } = await getCommunities({
+  // const { success, data, error } = await getCommunities({
+  //   page: Number(page) || 1,
+  //   pageSize: Number(pageSize) || 10,
+  //   query: query || "",
+  //   filter: filter || "",
+  // });
+
+  const { success, data, error } = await getCommunitiesByUser({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",
     filter: filter || "",
+    id: user?.id,
   });
 
   const { communities } = data || {};
-  console.log(communities)
-
-  // const filteredQuestions = questions.filter((question) => {
-  //   const matchesQuery = question.title
-  //     .toLowerCase()
-  //     .includes(query?.toLowerCase());
-  //   const matchesFilter = filter
-  //     ? question.title.toLowerCase().includes(filter?.toLowerCase())
-  //     : true;
-  //   return matchesQuery && matchesFilter;
-  // });
+  // console.log(communities);
 
   return result?.user ? (
     <>
@@ -91,7 +43,7 @@ const Home = async ({ searchParams }: SearchParams) => {
           className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900"
           asChild
         >
-          <Link href={ROUTES.CREATE_COMMUNITY}>Ask a Question</Link>
+          <Link href={ROUTES.CREATE_COMMUNITY}>Create a Community</Link>
         </Button> */}
       </section>
       <section className="mt-11">
@@ -102,26 +54,34 @@ const Home = async ({ searchParams }: SearchParams) => {
           otherClasses="flex-1"
         />
       </section>
-      <HomeFilter />
+      {/* <HomeFilter /> */}
       {success ? (
-        <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {communities && communities.length > 0 ? (
-            communities.map((community) => (
-              <CommunityCard
-                key={community._id}
-                id={community._id}
-                title={community.title}
-                description={community.description}
-                members={community.members.length}
-                price={community.price}
-                image={community.img}
-              />
-            ))
-          ) : (
-            <div className="mt-10 flex w-full items-center justify-center">
-              <p className="text-dark400_light700">No Communities</p>
-            </div>
+        <div className="">
+          {communities && communities.length > 0 && (
+            <h1 className="primary-text-gradient h2-bold mt-10 inline-block">
+              Admin
+            </h1>
           )}
+          <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {communities && communities.length > 0 ? (
+              communities.map((community) => (
+                <CommunityCard
+                  key={community._id}
+                  id={community._id}
+                  title={community.title}
+                  description={community.description}
+                  members={community.members.length}
+                  secondaryAdmins={community.secondaryAdmins.length}
+                  price={community.price}
+                  image={community.img}
+                />
+              ))
+            ) : (
+              <div className="mt-10 flex w-full items-center justify-center">
+                <p className="text-dark400_light700">No Communities</p>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <div className="mt-10 flex w-full items-center justify-center">

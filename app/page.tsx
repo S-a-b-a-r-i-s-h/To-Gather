@@ -46,9 +46,9 @@ export default async function Home() {
   // console.log(session?.user);
   return (
     // bg-gradient-to-tr from-blue-100 via-white to-indigo-100
-    <div className="min-h-screen border-2">
+    <div className="min-h-screen ">
       <Navbar route={ROUTES.ROOT} />
-      <main className="container mx-auto mt-20 border-2 px-10 py-16 text-center">
+      <main className="container mx-auto mt-20  px-10 py-16 text-center">
         <h2 className="primary-text-gradient font-robotoslab text-6xl font-extrabold leading-tight max-sm:text-3xl">
           Build. Manage. Grow Your Community.
         </h2>
