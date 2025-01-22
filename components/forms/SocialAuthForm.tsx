@@ -1,11 +1,12 @@
-"use client"
+"use client";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 import React from "react";
 
-import { Button } from "../ui/button";
-import { toast } from "@/hooks/use-toast";
-import { signIn } from "next-auth/react";
 import ROUTES from "@/constants/routes";
+import { toast } from "@/hooks/use-toast";
+
+import { Button } from "../ui/button";
 
 // import signIn from "next-auth/react";
 
@@ -16,7 +17,7 @@ const SocialAuthForm = () => {
   const handleSignIn = async (provider: "github" | "google") => {
     try {
       await signIn(provider, {
-        callbackUrl: ROUTES.HOME,
+        redirectTo: ROUTES.HOME,
         redirect: false,
       });
     } catch (error) {

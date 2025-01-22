@@ -12,14 +12,16 @@ interface Props {
   id: string;
   user: boolean;
   action: "add" | "remove" | "upgrade" | "downgrade";
+  memberId?: string;
 }
 
-const MemberJoin = ({ id, user, action }: Props) => {
+const MemberJoin = ({ id, user, action, memberId }: Props) => {
   const router = useRouter();
   const handleJoin = async () => {
     const result = await updateCommunityMembers({
       communityId: id,
       actions: action,
+      memberId
     });
     if (result.success) {
       toast({

@@ -8,6 +8,10 @@ const ROUTES = {
     COMMUNITY: (id: string) => `/community/${id}`,
     COMMUNITIES: (id: string) => `/community/${id}`,
     EDITCOMMUNITY: (id: string) => `/community/${id}/edit`,
+    CREATE_EVENT: (id: string) => `/community/${id}/create-event`,
+    EVENT: (id: string) => `/community/${id}/event`,
+    EVENT_ID: (communityId: string, eventId: string) => `/community/${communityId}/event/${eventId}`,
+
 }
 
 export default ROUTES;

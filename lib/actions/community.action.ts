@@ -4,14 +4,17 @@ import mongoose, { FilterQuery } from "mongoose";
 
 import { User } from "@/database";
 import Community from "@/database/community.model";
+// import {
+//   ActionResponse,
+//   Community,
+//   ErrorResponse,
+//   GradeCommunityMembersParams,
+//   PaginatedSearchParams,
+//   UpdateCommunityMembersParams,
+// } from "@/types/global";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
-// import {
-//   ActionResponse,
-//   ErrorResponse,
-//   PaginatedSearchParams,
-// } from "@/types/global";
 import {
   CreateCommunitySchema,
   EditCommunitySchema,
@@ -20,6 +23,7 @@ import {
   PaginatedSearchParamsSchema,
   UpdateCommunityMembersSchema,
 } from "../validations";
+
 
 export async function createCommunity(
   params: CreateCommunityParams
@@ -325,8 +329,9 @@ export async function updateCommunityMembers(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { communityId, actions } = validationResult.params!;
-  const userId = validationResult?.session?.user?.id;
+  const { communityId, actions, memberId } = validationResult.params!;
+  const userId = memberId;
+  // GET USER ID FROM THE FRONT END NOT FROM THE SESSION.
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -349,6 +354,12 @@ export async function updateCommunityMembers(
       );
     }
 
+    if(actions === "remove" && community.secondaryAdmins.includes(userId)) {
+      community.secondaryAdmins = community.secondaryAdmins.filter(
+        (secondaryAdmin: mongoose.Types.ObjectId) => secondaryAdmin.toString() !== userId
+      );
+    }
+
     if (actions === "upgrade" && !community.secondaryAdmins.includes(userId)) {
       community.secondaryAdmins.push(userId);
       community.members = community.members.filter(
@@ -361,8 +372,8 @@ export async function updateCommunityMembers(
         (admin: mongoose.Types.ObjectId) => admin.toString() !== userId
       );
       community.members.push(userId);
-    } 
-    
+    }
+
     await community.save({ session });
 
     await session.commitTransaction();
@@ -426,3 +437,4 @@ export async function gradeCommunityMembers(
     session.endSession();
   }
 }
+

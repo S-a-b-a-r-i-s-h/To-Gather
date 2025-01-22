@@ -74,6 +74,7 @@ const Home = async ({ searchParams }: SearchParams) => {
                   secondaryAdmins={community.secondaryAdmins.length}
                   price={community.price}
                   image={community.img}
+                  shortDescription={community.shortDescription}
                 />
               ))
             ) : (

@@ -20,15 +20,56 @@ interface Community {
     website?: string;
 }
 
+interface Events {
+  _id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  date: Date;
+  price: number;
+  type: "individual" | "group";
+  teamSize?: number;
+  label?: string;
+  inputType?: "text" | "number" | "select" | "textarea";
+  options?: string | undefined; // Match schema's behavior
+  dynamicFields?: {
+    namelabel?: string;
+    label?: string;
+    type?: "text" | "number" | "select" | "textarea";
+    options?: string[] | undefined; // Explicit undefined
+    value?: string | number | string[];
+  }[] | []; // Reflect schema's default
+  participants?: {
+    participantId?: string;
+    dynamicFields?: {
+      namelabel?: string;
+      label?: string;
+      type?: "text" | "number" | "select" | "textarea";
+      options?: string[] | undefined;
+      value?: string | number | string[];
+    }[] | []; // Reflect schema's default
+  }[] | [];
+  communityId: string;
+  createdBy: string;
+  groupDetails?: {
+    name?: string;
+    members?: string[];
+  };
+}
+
 interface UpdateCommunityMembersParams {
     communityId: string;
     actions: "add" | "remove" | "upgrade" | "downgrade";
+    memberId?: string;
 }
 
 interface GradeCommunityMembersParams {
   communityId: string;
   actions: "upgrade" | "downgrade";
 }
+
+
+
 
 type ActionResponse<T = null> = {
     success: boolean;

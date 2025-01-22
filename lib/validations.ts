@@ -1,4 +1,10 @@
+// import mongoose from "mongoose";
 import { z } from "zod";
+
+// import { Community, User } from "@/database";
+
+// import action from "./handlers/action";
+// import handleError from "./handlers/error";
 
 export const SignInSchema = z.object({
   email: z
@@ -73,6 +79,322 @@ export const CreateCommunitySchema = z.object({
   website: z.string().optional(),
 });
 
+// export const DynamicFieldSchema = z.object({
+//   name: z.string().optional(),
+//   label: z.string().optional(),
+//   type: z.enum(["text", "number", "select", "textarea"]).optional(),
+//   options: z.array(z.string()).optional(),
+//   value: z.union([z.string(), z.number(), z.array(z.string())]).optional(),
+// });
+
+export const DynamicFieldSchema = z
+  .object({
+    name: z.string().nonempty({ message: "Field name is required." }),
+    label: z.string().nonempty({ message: "Field label is required." }),
+    type: z.enum(["text", "number", "select", "textarea"], {
+      message: "Invalid field type.",
+    }),
+    options: z
+      .array(z.string())
+      .optional()
+      .refine((opts) => Array.isArray(opts) && opts.length > 0, {
+        message: "Options must be provided for select type.",
+        path: ["options"],
+      })
+      .or(z.undefined()),
+    value: z.union([z.string(), z.number(), z.array(z.string())]).optional(),
+  })
+  .refine(
+    (data) => {
+      // Require options only when type is "select"
+      if (data.type === "select") {
+        return !!data.options && data.options.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Options are required for 'select' type fields.",
+      path: ["options"],
+    }
+  );
+
+export const ParticipantSchema = z.object({
+  id: z.string(), // Use z.instanceof(ObjectId) if working with MongoDB ObjectIds
+  dynamicFields: z.array(DynamicFieldSchema).optional(),
+});
+
+export const GroupDetailsSchema = z.object({
+  name: z.string().optional(),
+  members: z.array(z.string()).optional(),
+});
+export const dummySchema = z
+  .object({
+    title: z
+      .string()
+      .min(5, { message: "Title must be at least 5 characters long." }),
+    description: z
+      .string()
+      .min(20, { message: "Description must be at least 20 characters long." }),
+    price: z
+      .number()
+      .min(0, { message: "Price must be a non-negative value." }),
+    imageUrl: z.string(),
+    date: z.date().min(new Date(), { message: "Date must be in the future." }),
+    type: z.enum(["individual", "group"]),
+    teamSize: z.number().optional(),
+    label: z.string().optional(),
+    inputType: z.enum(["text", "number", "select", "textarea"]).optional(),
+    options: z.string().optional(),
+    dynamicFields: z
+      .array(
+        z.object({
+          namelabel: z.string().optional(),
+          label: z.string().optional(),
+          type: z.enum(["text", "number", "select", "textarea"]).optional(),
+          options: z.array(z.string()).optional(),
+          value: z
+            .union([z.string(), z.number(), z.array(z.string())])
+            .optional(),
+        })
+      )
+      .optional()
+      .default([]),
+    participants: z
+      .array(
+        z.object({
+          id: z.string().optional(),
+          dynamicFields: z
+            .array(
+              z.object({
+                namelabel: z.string().optional(),
+                label: z.string().optional(),
+                type: z
+                  .enum(["text", "number", "select", "textarea"])
+                  .optional(),
+                options: z.array(z.string()).optional(),
+                value: z
+                  .union([z.string(), z.number(), z.array(z.string())])
+                  .optional(),
+              })
+            )
+            .optional()
+            .default([]),
+        })
+      )
+      .optional()
+      .default([]),
+    communityId: z.string().min(1, { message: "Community ID is required." }),
+    createdBy: z.string().min(1, { message: "Creator ID is required." }),
+    groupDetails: z
+      .array(
+        z.object({
+          name: z.string().optional(),
+          members: z.array(z.string()).optional(),
+        })
+      )
+      .optional()
+      .default([]),
+  })
+  .refine(
+    (data) => {
+      if (data.type === "group") {
+        return data.teamSize;
+      }
+      return true;
+    },
+    {
+      message: "Team size is required for group events",
+      path: ["teamSize"],
+    }
+  );
+
+export const UpdateEventParticipantsSchema = z.object({
+  eventId: z.string(),
+  participantId: z.string(),
+  datadynamicFields: z
+    .array(
+      z.object({
+        namelabel: z.string().optional(),
+        label: z.string().optional(),
+        type: z.enum(["text", "number", "select", "textarea"]).optional(),
+        options: z.array(z.string()).optional(),
+        value: z
+          .union([z.string(), z.number(), z.array(z.string())]).optional()
+      })
+    )
+    .optional()
+    .default([]),
+    newGroup: z.object({
+      name: z.string().optional(),
+      members: z.array(z.string()).optional(),
+    }),
+    groupAction: z.enum(["create", "join"]).optional(),
+});
+
+export const ApplyEventSchema = z.object({
+  dynamicFields: z
+    .array(
+      z.object({
+        namelabel: z.string().optional(),
+        label: z.string().optional(),
+        type: z.enum(["text", "number", "select", "textarea"]).optional(),
+        options: z.array(z.string()).optional(),
+        value: z
+          .union([z.string(), z.number(), z.array(z.string())])
+          .optional(),
+      })
+    )
+    .optional()
+    .default([]),
+  participants: z
+    .array(
+      z.object({
+        participantId: z.string().optional(),
+        dynamicFields: z
+          .array(
+            z.object({
+              namelabel: z.string().optional(),
+              label: z.string().optional(),
+              type: z.enum(["text", "number", "select", "textarea"]).optional(),
+              options: z.array(z.string()).optional(),
+              value: z
+                .union([z.string(), z.number(), z.array(z.string())])
+                .optional(),
+            })
+          )
+          .optional()
+          .default([]),
+      })
+    )
+    .optional()
+    .default([]),
+    groupDetails: z
+      .array(
+        z.object({
+          name: z.string().optional(),
+          members: z.array(z.string()).optional(),
+        })
+      )
+      .optional()
+      .default([]),
+      groupAction: z.enum(["create", "join"]).optional(),    
+});
+// export const CreateEventSchema = z
+//   .object({
+//     title: z
+//       .string()
+//       .min(5, { message: "Title must be at least 5 characters long." }),
+//     description: z
+//       .string()
+//       .min(20, { message: "Description must be at least 20 characters long." }),
+//     // image: z.string().min(1, { message: "Image is required." }),
+//     date: z.date().min(new Date(), { message: "Date must be in the future." }),
+//     price: z
+//       .number()
+//       .min(0, { message: "Price must be a non-negative value." }),
+//     type: z.enum(["individual", "group"]),
+//     teamSize: z.number().min(1, "Team size must be at least 1").optional(),
+//     participants: z.array(ParticipantSchema).optional(),
+//     communityId: z.string().min(1, { message: "Community ID is required." }),
+//     createdBy: z.string().min(1, { message: "Creator ID is required." }),
+//     groupDetails: GroupDetailsSchema.optional(),
+//   })
+//   .refine(
+//     (data) => {
+//       // Validate `teamSize` only if the event type is `group`
+//       if (
+//         data.type === "group" &&
+//         (data.teamSize === undefined || data.teamSize <= 0)
+//       ) {
+//         return false;
+//       }
+//       return true;
+//     },
+//     {
+//       message: "Team size is required for group events",
+//       path: ["teamSize"], // Path to the field that caused the error
+//     }
+//   );
+
+// export async function createCommunity(
+//   params: CreateCommunityParams
+// ): Promise<ActionResponse<Community>> {
+//   const validationResult = await action({
+//     params,
+//     schema: CreateCommunitySchema,
+//     authorize: true,
+//   });
+
+//   if (validationResult instanceof Error) {
+//     return handleError(validationResult) as ErrorResponse;
+//   }
+
+//   const {
+//     title,
+//     description,
+//     shortDescription,
+//     image,
+//     price,
+//     linkedin,
+//     x,
+//     github,
+//     instagram,
+//     whatsapp,
+//     website,
+//   } = validationResult.params!;
+//   const userId = validationResult?.session?.user?.id;
+
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     const [community] = await Community.create(
+//       [
+//         {
+//           title,
+//           description,
+//           shortDescription,
+//           img: image,
+//           price,
+//           admin: userId,
+//           linkedin,
+//           x,
+//           github,
+//           instagram,
+//           whatsapp,
+//           website,
+//         },
+//       ],
+//       { session }
+//     );
+//     if (!community) {
+//       throw new Error("Failed to create Community");
+//     }
+
+//     // Now update the user with the new community
+
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       throw new Error("User not found");
+//     }
+
+//     user.communities.push(community._id);
+//     await user.save({ session });
+
+//     await session.commitTransaction();
+//     return { success: true, data: JSON.parse(JSON.stringify(community)) };
+//   } catch (error) {
+//     await session.abortTransaction();
+//     return handleError(error) as ErrorResponse;
+//   } finally {
+//     session.endSession();
+//   }
+// }
+
+export const GetEventSchema = z.object({
+  eventId: z.string(),
+});
+
 export const EditCommunitySchema = CreateCommunitySchema.extend({
   communityId: z.string().min(1, { message: "Community ID is required." }),
 });
@@ -81,13 +403,14 @@ export const UpdateCommunityMembersSchema = z.object({
   communityId: z.string().min(1, { message: "Community ID is required." }),
   // userId: z.string().min(1, { message: "User ID is required." }),
   actions: z.enum(["add", "remove", "upgrade", "downgrade"]),
-})
+  memberId: z.string().optional()
+});
 
 export const GradeCommunityMembersSchema = z.object({
   communityId: z.string().min(1, { message: "Community ID is required." }),
   // userId: z.string().min(1, { message: "User ID is required." }),
   actions: z.enum(["upgrade", "downgrade"]),
-})
+});
 
 export const GetCommunitySchema = z.object({
   communityId: z.string().min(1, { message: "Community ID is required." }),
@@ -162,4 +485,4 @@ export const PaginatedSearchParamsSchema = z.object({
   filter: z.string().optional(),
   sort: z.string().optional(),
   id: z.string().optional(),
-})
+});
