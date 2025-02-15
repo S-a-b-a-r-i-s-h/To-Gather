@@ -17,7 +17,7 @@ const EditCommunity = async ({ params }: RouteParams) => {
   if (!id) return notFound();
 
   const session = await auth();
-  if (!session) return redirect("/sign-in");
+  if (!session) return redirect("/home");
 
   const { data: community, success } = await getCommunity({ communityId: id });
   if (!success) return notFound();

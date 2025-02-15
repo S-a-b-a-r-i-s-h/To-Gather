@@ -57,6 +57,20 @@ interface Events {
   };
 }
 
+interface User {
+  _id: string;
+  name: string;
+  username: string;
+  email: string;
+  bio?: string;
+  image?: string;
+  userLocation?: string;
+  portfolio?: string;
+  github?: string;
+  linkedin?: string;
+  communities?: string[];
+}
+
 interface UpdateCommunityMembersParams {
     communityId: string;
     actions: "add" | "remove" | "upgrade" | "downgrade";

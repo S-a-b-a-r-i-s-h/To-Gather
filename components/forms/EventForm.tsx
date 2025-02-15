@@ -3,18 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { startTransition, useState } from "react";
+import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 
-import { toast } from "@/hooks/use-toast";
-import { createEvent } from "@/lib/actions/event.action";
-import { useUploadThing } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
 import { dummySchema } from "@/lib/validations";
 
-import { FileUploader } from "../FileUploader";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import {
@@ -43,10 +38,6 @@ interface Props {
 }
 
 const EventForm = ({ userId, paramsId }: Props) => {
-  const [files, setFiles] = useState<File[]>([]);
-
-  const { startUpload } = useUploadThing("imageUploader");
-  const router = useRouter();
   // const { params } = useParams();
   const form = useForm<z.infer<typeof dummySchema>>({
     resolver: zodResolver(dummySchema),
@@ -55,7 +46,6 @@ const EventForm = ({ userId, paramsId }: Props) => {
       description: "",
       price: 0,
       date: undefined,
-      imageUrl: "",
       // type: "individual",
       teamSize: 0,
       label: "",
@@ -63,19 +53,17 @@ const EventForm = ({ userId, paramsId }: Props) => {
       options: "",
       dynamicFields: [],
       participants: [
-        // {
-        //   id: "",
-        //   dynamicFields: [],
-        // },
+        {
+          id: "",
+          dynamicFields: [],
+        },
       ],
       communityId: paramsId,
       createdBy: userId,
-      groupDetails: [
-        {
-          name: "",
-          members: [],
-        },
-      ],
+      groupDetails: {
+        name: "",
+        members: [],
+      },
       // inputType: "text",
     },
   });
@@ -102,7 +90,6 @@ const EventForm = ({ userId, paramsId }: Props) => {
     append({ namelabel, label, type: inputType, options, value: "" });
     setLabel("");
     setInputType("text");
-    setOptions([]);
   };
   const removeField = (index: number) => {
     remove(index);
@@ -121,39 +108,8 @@ const EventForm = ({ userId, paramsId }: Props) => {
     setOptions((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleCreateEvent = async (data: z.infer<typeof dummySchema>) => {
+  const handleCreateEvent = (data: z.infer<typeof dummySchema>) => {
     console.log(data);
-    let uploadedImageUrl = data.imageUrl;
-
-    if (files.length > 0) {
-      const uploadedImages = await startUpload(files);
-
-      if (!uploadedImages) {
-        return;
-      }
-
-      uploadedImageUrl = uploadedImages[0].url;
-      data.imageUrl = uploadedImageUrl;
-    }
-    startTransition(async () => {
-      const result = await createEvent(data);
-
-      if (result.success) {
-        toast({
-          title: "Success",
-          description: "Community created successfully",
-        });
-
-        if (result.data)
-          router.push(`/community/${paramsId}/event/${result.data?._id}`);
-      } else {
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-          variant: "destructive",
-        });
-      }
-    });
   };
 
   return (
@@ -162,7 +118,6 @@ const EventForm = ({ userId, paramsId }: Props) => {
         className="flex w-full flex-col gap-10"
         onSubmit={form.handleSubmit(handleCreateEvent)}
       >
-        <h1>{paramsId}</h1>
         <FormField
           control={form.control}
           name="title"
@@ -200,7 +155,7 @@ const EventForm = ({ userId, paramsId }: Props) => {
                 Description
                 <span className="primary-text-gradient">*</span>
               </FormLabel>
-              <FormControl className="h-56">
+              <FormControl>
                 <Textarea
                   className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
                   id="description"
@@ -209,31 +164,6 @@ const EventForm = ({ userId, paramsId }: Props) => {
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 About the event.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col">
-              <FormLabel
-                className="paragraph-semibold text-dark400_light800"
-                htmlFor="imageUrl"
-              >
-                Event Image <span className="primary-text-gradient">*</span>
-              </FormLabel>
-              <FormControl>
-                <FileUploader
-                  onFieldChange={field.onChange}
-                  imageUrl={field.value}
-                  setFiles={setFiles}
-                />
-              </FormControl>
-              <FormDescription className="body-regular mt-2.5 text-light-500">
-                Upload an image for the event.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -378,7 +308,7 @@ const EventForm = ({ userId, paramsId }: Props) => {
             )}
           />
         )}
-        <h1 className="h1-bold">Dynamic Fields</h1>
+
         <FormField
           control={form.control}
           name="label"
@@ -457,11 +387,7 @@ const EventForm = ({ userId, paramsId }: Props) => {
                     onChange={(e) => setOptionInput(e.target.value)}
                   />
                 </FormControl>
-                <button
-                  type="button"
-                  className="rounded-lg px-2 py-1 text-green-500"
-                  onClick={addOption}
-                >
+                <button type="button" onClick={addOption}>
                   Add Option
                 </button>
                 <ul>
@@ -485,22 +411,19 @@ const EventForm = ({ userId, paramsId }: Props) => {
         <button
           type="button"
           onClick={addField}
-          className="w-fit rounded-lg bg-green-500 p-2 !text-light-900"
+          className="primary-bg-gradient w-fit !text-light-900"
         >
           Add Field
         </button>
 
         {fields.map((field, index) => (
-          <div
-            key={field.id}
-            className="flex gap-4 rounded-lg px-3 py-2 shadow-sm shadow-black dark:shadow-white"
-          >
+          <div key={field.id} className="flex gap-4">
             <span>{field.label}</span>
             <span>{field.type}</span>
             <button
               type="button"
               onClick={() => removeField(index)}
-              className="w-fit text-red-600"
+              className="w-fit p-2 text-red-600"
             >
               Remove
             </button>

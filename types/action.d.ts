@@ -1,3 +1,5 @@
+// AUTH PARAMS
+
 interface SignInWithOAuthParams {
     provider: "github" | "google";
     providerAccountId: string;
@@ -16,41 +18,7 @@ interface AuthCredentials {
   password: string;
 }
 
-interface dummyParams {
-  title: string;
-  description: string;
-  date: Date;
-  price: number;
-  imageUrl: string;
-  type: "individual" | "group";
-  teamSize?: number;
-  label?: string;
-  inputType?: "text" | "number" | "select" | "textarea";
-  options?: string | undefined; // Match schema's behavior
-  dynamicFields?: {
-    namelabel?: string;
-    label?: string;
-    type?: "text" | "number" | "select" | "textarea";
-    options?: string[] | undefined; // Explicit undefined
-    value?: string | number | string[];
-  }[] | []; // Reflect schema's default
-  participants?: {
-    id?: string;
-    dynamicFields?: {
-      namelabel?: string;
-      label?: string;
-      type?: "text" | "number" | "select" | "textarea";
-      options?: string[] | undefined;
-      value?: string | number | string[];
-    }[] | []; // Reflect schema's default
-  }[] | [];
-  communityId: string;
-  createdBy: string;
-  groupDetails?: {
-    name?: string;
-    members?: string[];
-  }[] | [];
-}
+// COMMUNITY PARAMS
 
 
 // interface CreateEventParams {
@@ -113,6 +81,44 @@ interface GetCommunityParams {
   communityId: string;
 }
 
+// EVENT PARAMS
+
+interface dummyParams {
+  title: string;
+  description: string;
+  date: Date;
+  price: number;
+  imageUrl: string;
+  type: "individual" | "group";
+  teamSize?: number;
+  label?: string;
+  inputType?: "text" | "number" | "select" | "textarea";
+  options?: string | undefined; // Match schema's behavior
+  dynamicFields?: {
+    namelabel?: string;
+    label?: string;
+    type?: "text" | "number" | "select" | "textarea";
+    options?: string[] | undefined; // Explicit undefined
+    value?: string | number | string[];
+  }[] | []; // Reflect schema's default
+  participants?: {
+    id?: string;
+    dynamicFields?: {
+      namelabel?: string;
+      label?: string;
+      type?: "text" | "number" | "select" | "textarea";
+      options?: string[] | undefined;
+      value?: string | number | string[];
+    }[] | []; // Reflect schema's default
+  }[] | [];
+  communityId: string;
+  createdBy: string;
+  groupDetails?: {
+    name?: string;
+    members?: string[];
+  }[] | [];
+}
+
 interface GetEventParams {
   eventId: string;
 }
@@ -132,4 +138,36 @@ interface UpdateEventParticipantsParams {
     members: string[];
   }
   groupAction?: "create" | "join";
+}
+
+
+// USER PARAMS
+
+interface GetUserParams {
+  userId: string;
+}
+
+interface EditUserParams {
+  name: string;
+  username: string;
+  email: string;
+  bio?: string;
+  image?: string;
+  userLocation?: string;
+  portfolio?: string;
+  github?: string;
+  linkedin?: string;
+}
+
+interface EditUserParamsById {
+  userId: string;
+  name: string;
+  username: string;
+  email: string;
+  bio?: string;
+  image?: string;
+  userLocation?: string;
+  portfolio?: string;
+  github?: string;
+  linkedin?: string;
 }

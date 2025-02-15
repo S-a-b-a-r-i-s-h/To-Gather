@@ -406,6 +406,35 @@ export const UpdateCommunityMembersSchema = z.object({
   memberId: z.string().optional()
 });
 
+export const GetUserSchema = z.object({
+  userId: z.string(),
+});
+
+export const EditUserSchema = z.object({
+  name: z.string().min(1, { message: "Name is required." }),
+  username: z.string().min(1, { message: "Username is required." }),
+  email: z.string().email("Please enter a valid email address."),
+  bio: z.string().optional(),
+  image: z.string().optional(),
+  userLocation: z.string().optional(),
+  portfolio: z.string().optional(),
+  github: z.string().optional(),
+  linkedin: z.string().optional(),
+})
+
+export const EditUserSchemaById = z.object({
+  userId: z.string().min(1, { message: "User ID is required." }),
+  name: z.string().min(1, { message: "Name is required." }),
+  username: z.string().min(1, { message: "Username is required." }),
+  email: z.string().email("Please enter a valid email address."),
+  bio: z.string().optional(),
+  image: z.string().optional(),
+  userLocation: z.string().optional(),
+  portfolio: z.string().optional(),
+  github: z.string().optional(),
+  linkedin: z.string().optional(),
+});
+
 export const GradeCommunityMembersSchema = z.object({
   communityId: z.string().min(1, { message: "Community ID is required." }),
   // userId: z.string().min(1, { message: "User ID is required." }),

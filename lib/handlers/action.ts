@@ -25,14 +25,17 @@ async function action<T>({
   authorize = false,
 }: ActionOptions<T>) {
   if (schema && params) {
+    console.log("Params being validated:", params);
     try {
       schema.parse(params);
     } catch (error) {
       if (error instanceof ZodError) {
+        // console.error("ZodError Details:", error.flatten().fieldErrors);
         return new ValidationError(
           error.flatten().fieldErrors as Record<string, string[]>
         );
       } else {
+        console.log(error);
         return new Error("Schema validation failed");
       }
     }

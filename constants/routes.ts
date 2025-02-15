@@ -11,7 +11,7 @@ const ROUTES = {
     CREATE_EVENT: (id: string) => `/community/${id}/create-event`,
     EVENT: (id: string) => `/community/${id}/event`,
     EVENT_ID: (communityId: string, eventId: string) => `/community/${communityId}/event/${eventId}`,
-
+    EDITUSER: (id: string) => `/profile/${id}/edit`,
 }
 
 export default ROUTES;
