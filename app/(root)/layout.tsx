@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import AIChatButton from "@/components/AIChatButton";
+import ChatBot from "@/components/ChatBot";
 import LeftSidebar from "@/components/navigation/LeftSidebar";
 import Navbar from "@/components/navigation/navbar";
 
@@ -15,6 +17,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           <div className="mx-auto w-full max-w-5xl">{children}</div>
         </section>
       </div>
+      {/* <AIChatButton /> */}
+      <ChatBot />
     </main>
   );
 };
