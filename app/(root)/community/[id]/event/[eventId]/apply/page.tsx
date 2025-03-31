@@ -6,6 +6,7 @@ import ApplyEventForm from "@/components/forms/ApplyEventForm";
 import { getEventById } from "@/lib/actions/event.action";
 
 type Params = Promise<{ id: string; eventId: string }>;
+// is this the correct way
 const page = async ({
   params,
 }: {
