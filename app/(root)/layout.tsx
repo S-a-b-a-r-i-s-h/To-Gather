@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import AIChatButton from "@/components/AIChatButton";
+// import AIChatButton from "@/components/AIChatButton";
 import ChatBot from "@/components/ChatBot";
 import LeftSidebar from "@/components/navigation/LeftSidebar";
 import Navbar from "@/components/navigation/navbar";

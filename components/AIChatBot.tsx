@@ -202,7 +202,7 @@
 
 "use client";
 
-import { useChat, type UseChatOptions } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
 
 import { Chat } from "@/components/ui/chat";
 

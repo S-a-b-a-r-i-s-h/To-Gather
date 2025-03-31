@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useChat } from "@ai-sdk/react";
@@ -9,7 +10,7 @@ import {
   Loader2,
   ArrowDownCircleIcon,
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -26,7 +27,8 @@ import { ScrollArea } from "./ui/scroll-area";
 
 const ChatBot = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [showChatIcon, setShowChatIcon] = useState(true);
+  // const [showChatIcon, setShowChatIcon] = useState(true);
+  const showChatIcon = true;
   const chatIconRef = useRef<HTMLButtonElement>(null);
 
   const {
@@ -141,7 +143,7 @@ const ChatBot = () => {
                                 </code>
                               ) : (
                                 <pre
-                                  {...props}
+                                  {...(props as React.HTMLAttributes<HTMLPreElement>)}
                                   className="rounded bg-gray-200 px-2"
                                 >
                                   <code>{children}</code>

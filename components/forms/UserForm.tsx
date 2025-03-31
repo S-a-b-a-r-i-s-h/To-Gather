@@ -112,7 +112,7 @@ const UserForm = ({ user, isEdit = false }: Params) => {
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={() => (
             <FormItem className="flex w-full flex-col">
               <FormLabel
                 className="paragraph-semibold text-dark400_light800"

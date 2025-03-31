@@ -16,7 +16,7 @@ const Features = ({ idx, title, description, gradient }: FeaturesProps) => {
         ></div>
         <div
           className={`relative w-full flex-1 rounded-[10px]
-             bg-gradient-to-tr from-cyan-50 to-indigo-50 dark:from-gray-950 dark:via-black dark:to-gray-900 p-10 text-start max-sm:p-6 sm:w-[350px] sm:min-w-[350px]`}
+             bg-gradient-to-tr from-cyan-50 to-indigo-50 p-10 text-start dark:from-gray-950 dark:via-black dark:to-gray-900 max-sm:p-6 sm:w-[350px] sm:min-w-[350px]`}
         >
           <div
             className={` text-2xl font-bold ${gradient} inline-block w-auto bg-clip-text text-transparent`}

@@ -1,9 +1,9 @@
-import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
+import { google } from "@ai-sdk/google";
 import { streamText, Message } from "ai";
-import build from "next/dist/build";
+// import build from "next/dist/build";
 
 import { initialMessage } from "@/lib/data";
-import dbConnect from "@/lib/mongoose";
+// import dbConnect from "@/lib/mongoose";
 
 // const google = createGoogleGenerativeAI({
 //   apiKey: process.env.GOOGLE_API_KEY || "",
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
     return new Response(
       JSON.stringify({
         error: "Failed to generate response",
-        details: error.message,
+        details: (error instanceof Error ? error.message : "Unknown error"),
       }), // Include details!
       { status: 500, headers: { "Content-Type": "application/json" } }
     );

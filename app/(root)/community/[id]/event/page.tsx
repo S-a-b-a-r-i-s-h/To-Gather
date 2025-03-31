@@ -68,7 +68,7 @@ const page = async ({ params, searchParams }: EventPageProps) => {
                   eventId={event._id}
                   title={event.title}
                   description={event.description}
-                  price={event.price}
+                  // price={event.price}
                   date={event.date}
                   imageUrl={event.imageUrl}
                   eventType={event.type}

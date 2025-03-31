@@ -10,7 +10,7 @@ interface EventCardProps {
   eventId: string;
   title: string;
   description: string;
-  price: number;
+  // price: number;
   date: Date;
   imageUrl: string;
   eventType: string;
@@ -21,7 +21,7 @@ const EventCard: React.FC<EventCardProps> = ({
   eventId,
   title,
   description,
-  price,
+  // price,
   date,
   imageUrl,
   eventType
