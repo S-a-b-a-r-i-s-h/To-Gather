@@ -5,10 +5,11 @@ import { auth } from "@/auth";
 import ApplyEventForm from "@/components/forms/ApplyEventForm";
 import { getEventById } from "@/lib/actions/event.action";
 
+type Params = Promise<{ id: string; eventId: string }>;
 const page = async ({
   params,
 }: {
-  params: Promise<{ id: string; eventId: string }>;
+  params: Params;
 }) => {
   const session = await auth();
   if (!session) return redirect("/home");
