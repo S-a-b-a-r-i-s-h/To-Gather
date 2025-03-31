@@ -129,19 +129,12 @@ const ChatBot = () => {
                           components={{
                             code({
                               node,
-                              inline,
+                              // inline,
                               className,
                               children,
                               ...props
                             }) {
-                              return inline ? (
-                                <code
-                                  {...props}
-                                  className="rounded bg-gray-200 px-1"
-                                >
-                                  {children}
-                                </code>
-                              ) : (
+                              return (
                                 <pre
                                   {...(props as React.HTMLAttributes<HTMLPreElement>)}
                                   className="rounded bg-gray-200 px-2"
