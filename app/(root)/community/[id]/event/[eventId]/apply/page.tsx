@@ -8,12 +8,12 @@ import { getEventById } from "@/lib/actions/event.action";
 const page = async ({
   params,
 }: {
-  params: { id: string; eventId: string };
+  params: Promise<{ id: string; eventId: string }>;
 }) => {
   const session = await auth();
   if (!session) return redirect("/home");
 
-  const { id, eventId } = params;
+  const { id, eventId } = await params;
 
   const { data: event, success } = await getEventById({ eventId });
   if (!success) return notFound();

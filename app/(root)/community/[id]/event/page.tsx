@@ -9,7 +9,7 @@ import LocalSearch from "@/components/search/LocalSearch";
 import { getEventsByCommunityId } from "@/lib/actions/event.action";
 
 interface EventPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string }>;
 }
 
