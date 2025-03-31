@@ -1,18 +1,24 @@
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import CommunityCard from "@/components/cards/CommunityCard";
-import HomeFilter from "@/components/filters/HomeFilter";
+// import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { getCommunities } from "@/lib/actions/community.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
+export const metadata: Metadata = {
+  title: "To-Gather | Communities",
+  description:
+    "Search for communities that you are interested in and join them to start engaging with like-minded people.",
+};
 
 const Community = async ({ searchParams }: SearchParams) => {
   const result = await auth();
-//   const { user }  = result || {};
+  //   const { user }  = result || {};
 
   const { page, pageSize, query, filter } = await searchParams;
 
@@ -23,16 +29,16 @@ const Community = async ({ searchParams }: SearchParams) => {
     filter: filter || "",
   });
 
-//   const { success, data, error } = await getCommunitiesByUser({
-//     page: Number(page) || 1,
-//     pageSize: Number(pageSize) || 10,
-//     query: query || "",
-//     filter: filter || "",
-//     id: user?.id
-//   })
+  //   const { success, data, error } = await getCommunitiesByUser({
+  //     page: Number(page) || 1,
+  //     pageSize: Number(pageSize) || 10,
+  //     query: query || "",
+  //     filter: filter || "",
+  //     id: user?.id
+  //   })
 
   const { communities } = data || {};
-//   console.log(communities);
+  //   console.log(communities);
 
   return result?.user ? (
     <>
@@ -54,7 +60,7 @@ const Community = async ({ searchParams }: SearchParams) => {
           otherClasses="flex-1"
         />
       </section>
-      <HomeFilter />
+      {/* <HomeFilter /> */}
       {success ? (
         <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {communities && communities.length > 0 ? (

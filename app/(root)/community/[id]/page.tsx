@@ -33,6 +33,22 @@ type PopulatedCommunity = Community & {
   members: User[];
 };
 
+export async function generateMetadata({ params }: RouteParams) {
+  const { id } = await params;
+  if (!id) return notFound();
+
+  const { data: community, success } = await getCommunity({ communityId: id });
+  if (!success) return notFound();
+
+  const populatedCommunity = community as PopulatedCommunity;
+
+  return {
+    title: populatedCommunity.title,
+    description: populatedCommunity.shortDescription,
+    image: populatedCommunity.img,
+  };
+}
+
 const CommunityDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
   if (!id) return notFound();

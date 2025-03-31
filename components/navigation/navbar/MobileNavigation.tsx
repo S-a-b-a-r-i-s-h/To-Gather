@@ -56,7 +56,7 @@ const MobileNavigation = async () => {
             </section>
           </SheetClose>
 
-          <div className="flex flex-col gap-3">
+          <div className="mb-6 flex flex-col gap-3">
             {result?.user ? (
               <form
                 action={async () => {

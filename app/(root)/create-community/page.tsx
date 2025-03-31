@@ -1,11 +1,17 @@
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
 
 import { auth } from "@/auth";
 import CommunityForm from "@/components/forms/CommunityForm";
 
-const CreateCommunity = async () => {
+export const metadata: Metadata = {
+  title: "Create Community | To-Gather",
+  description:
+    "Create your own community and start engaging with like-minded people.",
+};
 
+const CreateCommunity = async () => {
   const session = await auth();
   if (!session?.user) return redirect("/");
   return (
@@ -20,5 +26,3 @@ const CreateCommunity = async () => {
 };
 
 export default CreateCommunity;
-
-

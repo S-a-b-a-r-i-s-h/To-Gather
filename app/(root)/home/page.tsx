@@ -1,4 +1,5 @@
 // import dynamic from "next/dynamic";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 import { cache } from "react";
@@ -17,6 +18,12 @@ const getAuth = cache(() => auth());
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
+
+export const metadata: Metadata = {
+  title: "To-Gather | Home",
+  description:
+    "Your home page where you can view communities that you are a part of.",
+};
 
 const Home = async ({ searchParams }: SearchParams) => {
   // Parallel fetching for auth and search params

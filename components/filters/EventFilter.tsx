@@ -43,7 +43,7 @@ const EventFilter = () => {
   };
 
   return (
-    <div className="mt-10 hidden flex-wrap gap-3 sm:flex">
+    <div className="mt-10 flex flex-wrap gap-3">
       {filters.map((filter) => (
         <div key={filter.value} className="relative">
           <div
