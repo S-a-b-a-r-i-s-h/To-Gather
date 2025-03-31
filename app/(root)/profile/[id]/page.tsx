@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import { getUserById } from "@/lib/actions/user.action";
 
-const UserDetails = async ({ params }: { params: { id: string } }) => {
+const UserDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
   const session = await auth();
   if (!session) return redirect("/home");
 
