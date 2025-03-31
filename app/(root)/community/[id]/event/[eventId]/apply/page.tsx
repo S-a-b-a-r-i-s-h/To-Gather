@@ -13,7 +13,7 @@ const page = async ({
   const session = await auth();
   if (!session) return redirect("/home");
 
-  const { id, eventId } = await params;
+  const { id, eventId } = params;
 
   const { data: event, success } = await getEventById({ eventId });
   if (!success) return notFound();
