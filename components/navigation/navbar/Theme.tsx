@@ -20,11 +20,11 @@ const Theme = () => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="outline-none focus:outline-none focus-visible:ring-0 hover:bg-transparent dark:hover:bg-transparent hover:rotate-[115deg] transition-all duration-300"
+          className="outline-none transition-all duration-300 hover:rotate-[115deg] hover:bg-transparent focus:outline-none focus-visible:ring-0 dark:hover:bg-transparent"
           size="icon"
         >
-          <SunIcon className="text-indigo-500 size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <MoonIcon className=" text-cyan-500 scale-0 absolute size-[1.2rem] rotate-90  transition-all dark:rotate-0 dark:scale-100" />
+          <SunIcon className="size-[1.2rem] rotate-0 scale-100 text-indigo-500 transition-all dark:-rotate-90 dark:scale-0" />
+          <MoonIcon className=" absolute size-[1.2rem] rotate-90 scale-0 text-cyan-500  transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>

@@ -222,12 +222,12 @@ export async function getEventsByCommunityId(
   let sortCriteria = {};
 
   switch (filter) {
-    case "free":
-      filterQuery.price = "0";
+    case "individual":
+      filterQuery.type = "individual";
       sortCriteria = { createdAt: -1 };
       break;
-    case "paid":
-      filterQuery.price = { $ne: "0" };
+    case "group":
+      filterQuery.type = "group";
       sortCriteria = { createdAt: -1 };
       break;
     default:

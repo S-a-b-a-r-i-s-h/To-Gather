@@ -13,6 +13,7 @@ interface EventCardProps {
   price: number;
   date: Date;
   imageUrl: string;
+  eventType: string;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -23,6 +24,7 @@ const EventCard: React.FC<EventCardProps> = ({
   price,
   date,
   imageUrl,
+  eventType
 }) => {
   const truncateDescription = (text: string, limit: number) => {
     if (text.length > limit) {
@@ -64,13 +66,13 @@ const EventCard: React.FC<EventCardProps> = ({
       {/* Footer Section */}
       <div className="flex justify-between px-4 pb-4 pt-2 text-sm text-black sm:text-base">
         <p className="primary-text-gradient font-medium">{formattedDate}</p>
-        {price !== 0 ? (
-          <p className="bg-gradient-to-r from-amber-200 to-yellow-500 bg-clip-text font-medium text-transparent">
-            &#8377;{price}
+        {eventType === "individual" ? (
+          <p className="bg-gradient-to-r from-teal-400 to-teal-700 bg-clip-text font-medium text-transparent">
+            Individual
           </p>
         ) : (
           <p className="bg-gradient-to-r from-teal-400 to-teal-700 bg-clip-text font-medium text-transparent">
-            Free
+            Group
           </p>
         )}
       </div>

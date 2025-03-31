@@ -63,11 +63,12 @@ const Community = async ({ searchParams }: SearchParams) => {
                 key={community._id}
                 id={community._id}
                 title={community.title}
-                description={community.description}
+                // description={community.description}
                 members={community.members.length}
                 secondaryAdmins={community.secondaryAdmins.length}
                 price={community.price}
                 image={community.img}
+                shortDescription={community.shortDescription}
               />
             ))
           ) : (

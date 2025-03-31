@@ -70,7 +70,7 @@ export const CreateCommunitySchema = z.object({
     .string()
     .min(10, { message: "Short Description is required." })
     .max(100, { message: "Short Description cannot exceed 100 characters." }),
-  price: z.string().min(0, { message: "Price cannot be negative." }),
+  price: z.string().min(0, { message: "Price cannot be negative." }).optional(),
   linkedin: z.string().optional(),
   x: z.string().optional(),
   github: z.string().optional(),

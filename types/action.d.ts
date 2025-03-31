@@ -63,7 +63,7 @@ interface CreateCommunityParams {
   description: string;
   shortDescription: string;
   image: string;
-  price: string;
+  price?: string;
   linkedin?: string;
   x?: string;
   github?: string;

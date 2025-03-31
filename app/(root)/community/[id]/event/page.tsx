@@ -3,7 +3,8 @@ import React from "react";
 
 import { auth } from "@/auth";
 import EventCard from "@/components/cards/EventCard";
-import HomeFilter from "@/components/filters/HomeFilter";
+import EventFilter from "@/components/filters/EventFilter";
+// import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { getEventsByCommunityId } from "@/lib/actions/event.action";
 
@@ -49,7 +50,8 @@ const page = async ({ params, searchParams }: EventPageProps) => {
           otherClasses="flex-1"
         />
       </section>
-      <HomeFilter />
+      {/* <HomeFilter /> */}
+      <EventFilter />
       {success ? (
         <div className="">
           {/* {events && events.length > 0 && (
@@ -69,6 +71,7 @@ const page = async ({ params, searchParams }: EventPageProps) => {
                   price={event.price}
                   date={event.date}
                   imageUrl={event.imageUrl}
+                  eventType={event.type}
                 />
               ))
             ) : (

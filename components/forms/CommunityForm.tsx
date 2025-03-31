@@ -61,6 +61,8 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
   ) => {
     startTransition(async () => {
       data.image = imagePreview || community?.img || "";
+      // data.price = ""
+      console.log(data)
 
       if (isEdit && community) {
         const result = await editCommunity({
@@ -112,7 +114,7 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={() => (
             <FormItem className="flex w-full flex-col">
               <FormLabel
                 className="paragraph-semibold text-dark400_light800"
@@ -224,7 +226,7 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
             </FormItem>
           )}
         />     
-        <FormField
+        { <FormField
           control={form.control}
           name="price"
           render={({ field }) => (
@@ -244,7 +246,7 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> }
         <FormField
           control={form.control}
           name="linkedin"

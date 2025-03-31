@@ -7,7 +7,7 @@ import ROUTES from "@/constants/routes";
 interface CommunityCardProps {
   id: string;
   title: string;
-  description: string;
+  // description: string;
   members: number;
   secondaryAdmins: number;
   price: string;
@@ -18,19 +18,19 @@ interface CommunityCardProps {
 const CommunityCard: React.FC<CommunityCardProps> = ({
   id,
   title,
-  description,
+  // description,
   members,
   secondaryAdmins,
   price,
   image,
   shortDescription,
 }) => {
-  const truncateDescription = (text: string, limit: number) => {
-    if (text.length > limit) {
-      return text.substring(0, limit) + "...";
-    }
-    return text;
-  };
+  // const truncateDescription = (text: string, limit: number) => {
+  //   if (text.length > limit) {
+  //     return text.substring(0, limit) + "...";
+  //   }
+  //   return text;
+  // };
 
   return (
     <Link

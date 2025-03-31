@@ -24,7 +24,6 @@ import {
   UpdateCommunityMembersSchema,
 } from "../validations";
 
-
 export async function createCommunity(
   params: CreateCommunityParams
 ): Promise<ActionResponse<Community>> {
@@ -354,9 +353,10 @@ export async function updateCommunityMembers(
       );
     }
 
-    if(actions === "remove" && community.secondaryAdmins.includes(userId)) {
+    if (actions === "remove" && community.secondaryAdmins.includes(userId)) {
       community.secondaryAdmins = community.secondaryAdmins.filter(
-        (secondaryAdmin: mongoose.Types.ObjectId) => secondaryAdmin.toString() !== userId
+        (secondaryAdmin: mongoose.Types.ObjectId) =>
+          secondaryAdmin.toString() !== userId
       );
     }
 
@@ -437,4 +437,3 @@ export async function gradeCommunityMembers(
     session.endSession();
   }
 }
-

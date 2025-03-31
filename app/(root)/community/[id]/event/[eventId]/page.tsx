@@ -46,9 +46,11 @@ const EventDetails = async ({
   const canApply =
     event?.dynamicFields &&
     session?.user?.id !== populatedEvent?.createdBy._id &&
-    event?.participants?.every(
-      (participant) => participant.participantId !== session?.user?.id
+    populatedEvent?.participants?.every(
+      (participant) => participant?.participantId?._id !== session?.user?.id
     );
+
+    console.log("participant", populatedEvent?.participants)
 
   const backendDate = event?.date;
   const formattedDate = backendDate
@@ -70,11 +72,11 @@ const EventDetails = async ({
           <div className="flex w-full flex-col gap-8 p-5 md:p-10">
             <div className="flex flex-col gap-6">
               <h2 className="h2-bold">{event?.title}</h2>
-              <div className="flex gap-3">
+              {/* <div className="flex gap-3">
                 <p className="rounded-full bg-green-500/10 px-5 py-2 text-green-700">
                   {event?.price === 0 ? "Free" : "Rs " + event?.price}
                 </p>
-              </div>
+              </div> */}
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="ml-2 mt-2 flex items-center gap-6 sm:mt-0">
@@ -117,7 +119,7 @@ const EventDetails = async ({
           </div>
         </div>
       </section>
-      <div className="mt-16">
+      {populatedEvent.participants.length > 0 && <div className="mt-16">
         <h1 className="h1-bold mb-5">Participants</h1>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {populatedEvent.participants.map((participant) => (
@@ -156,7 +158,7 @@ const EventDetails = async ({
             </div>
           ))}
         </div>
-      </div>
+      </div>}
     </>
   );
 };

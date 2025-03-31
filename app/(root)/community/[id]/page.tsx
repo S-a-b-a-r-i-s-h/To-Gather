@@ -14,6 +14,7 @@ import { LuTag } from "react-icons/lu";
 
 import { auth } from "@/auth";
 // import { Community } from "@/database";
+import { Preview } from "@/components/editor/Preview";
 import MemberJoin from "@/components/MemberJoin";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
@@ -112,14 +113,25 @@ const CommunityDetails = async ({ params }: RouteParams) => {
       {populatedCommunity.admin._id !== session?.user?.id && (
         <div className="mb-5 flex justify-center ">
           {canJoin ? (
-            <MemberJoin id={id} user={true} action="add" memberId={session?.user?.id} />
+            <MemberJoin
+              id={id}
+              user={true}
+              action="add"
+              memberId={session?.user?.id}
+            />
           ) : (
-            <MemberJoin id={id} user={true} action="remove" memberId={session?.user?.id} />
+            <MemberJoin
+              id={id}
+              user={true}
+              action="remove"
+              memberId={session?.user?.id}
+            />
           )}
         </div>
       )}
 
       {/* SPACE FOR DESCRIPTION */}
+      <Preview content={populatedCommunity.description} />
 
       <div className="mb-5 flex justify-center gap-5">
         {populatedCommunity.linkedin && (
@@ -156,10 +168,16 @@ const CommunityDetails = async ({ params }: RouteParams) => {
       )}
 
       <div className="flex justify-around">
-        <Link href={ROUTES.CREATE_EVENT(id)} className="h2-bold inline-block animate-text bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+        <Link
+          href={ROUTES.CREATE_EVENT(id)}
+          className="h2-bold inline-block animate-text bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent"
+        >
           Create Event
         </Link>
-        <Link href={ROUTES.EVENT(id)} className="h2-bold inline-block animate-text bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+        <Link
+          href={ROUTES.EVENT(id)}
+          className="h2-bold inline-block animate-text bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent"
+        >
           All Events
         </Link>
       </div>
