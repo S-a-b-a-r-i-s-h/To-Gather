@@ -38,14 +38,13 @@ export default async function Home() {
   const session = await auth();
   const userId = session?.user?.id;
   if (userId) {
-    redirect("/home");
+    return redirect("/home");
   }
   // if(session?.user) {
   //   redirect("/home");
   // }
   // console.log(session?.user);
   return (
-    // bg-gradient-to-tr from-blue-100 via-white to-indigo-100
     <div className="min-h-screen ">
       <Navbar route={ROUTES.ROOT} />
       <main className="container mx-auto mt-20  px-10 py-16 text-center">
@@ -61,7 +60,6 @@ export default async function Home() {
         </Link>
       </main>
 
-      {/* About Section */}
       <section className="container mx-auto px-10 py-16 text-center">
         <h2 className="inline-block w-auto bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text font-robotoslab text-6xl font-extrabold leading-tight text-transparent max-sm:text-3xl">
           Why Choose Us?
@@ -73,7 +71,6 @@ export default async function Home() {
         </p>
       </section>
 
-      {/* Features Section */}
       <section className="mx-auto px-10 py-16 text-center max-sm:px-1">
         <h2 className="mb-10 inline-block w-auto bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-center font-robotoslab text-6xl font-extrabold leading-tight text-transparent max-sm:text-3xl">
           Features That Matter

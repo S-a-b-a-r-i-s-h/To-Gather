@@ -14,9 +14,12 @@ interface Props{
 
 const Navbar = async ({route}: Props) => {
   const session = await auth();
+  const userId = session?.user?.id;
+  console.log("route", route);
+
   return (
     <nav className=" flex-between fixed top-0 z-50 w-full gap-5 bg-transparent p-5 sm:px-12">
-      <Link href="/" className="flex items-center gap-1">
+      <Link href={`${!userId ? '/' : '/home'}`} className="flex items-center gap-1">
         {/* <Image
           src="/images/site-logo.svg"
           width={23}

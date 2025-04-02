@@ -7,7 +7,10 @@ import { cache } from "react";
 import { auth } from "@/auth";
 // import CommunityCard from "@/components/cards/CommunityCard";
 // import LocalSearch from "@/components/search/LocalSearch";
+import Pagination from "@/components/Pagination";
 import { getCommunitiesByUser } from "@/lib/actions/community.action";
+
+// import Loading from "./loading";
 
 // Consider dynamic imports for components that aren't immediately needed
 const CommunityCard = dynamic(() => import("@/components/cards/CommunityCard"));
@@ -29,7 +32,7 @@ const Home = async ({ searchParams }: SearchParams) => {
   // Parallel fetching for auth and search params
   const [result, params] = await Promise.all([getAuth(), searchParams]);
   const { user } = result || {};
-  const { page = "1", pageSize = "10", query = "", filter = "" } = params;
+  const { page = "1", pageSize = "2", query = "", filter = "" } = params;
 
   if (!user) return redirect("/");
 
@@ -42,8 +45,12 @@ const Home = async ({ searchParams }: SearchParams) => {
     id: user?.id,
   });
 
-  const communities = data?.communities || [];
+  // const communities = data?.communities || [];
+  // const isNext = data?.isNext;
+  const { communities, isNext } = data || { communities: [], isNext: false };
 
+  // const loading = true;
+  // if (loading) return <Loading />;
   return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -98,6 +105,7 @@ const Home = async ({ searchParams }: SearchParams) => {
           </p>
         </div>
       )}
+      <Pagination page={page} isNext={isNext || false} />
     </>
   );
 };

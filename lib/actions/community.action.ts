@@ -266,11 +266,74 @@ export async function getCommunitiesByUser(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { page = 1, pageSize = 10, query, filter, id } = params;
+  const { page = 1, pageSize = 2, query, filter, id } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
 
   const filterQuery: FilterQuery<typeof Community> = { admin: id };
+
+  if (query) {
+    filterQuery.$or = [
+      { title: { $regex: new RegExp(query, "i") } },
+      // { description: { $regex: new RegExp(query, "i") } },
+    ];
+  }
+
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "free":
+      filterQuery.price = "0";
+      sortCriteria = { createdAt: -1 };
+      break;
+    case "paid":
+      filterQuery.price = { $ne: "0" };
+      sortCriteria = { createdAt: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+
+  try {
+    const totalCommunities = await Community.countDocuments(filterQuery);
+
+    const communities = await Community.find(filterQuery)
+      .lean()
+      .sort(sortCriteria)
+      .skip(skip)
+      .limit(limit);
+
+    const isNext = totalCommunities > skip + communities.length;
+
+    return {
+      success: true,
+      data: { communities: JSON.parse(JSON.stringify(communities)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getAllCommunitiesByUser(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ communities: Community[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { page = 1, pageSize = 10, query, filter, id } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+
+  const filterQuery: FilterQuery<typeof Community> = {
+    $or: [{ admin: id }, { secondaryAdmins: id }, { members: id }],
+  };
 
   if (query) {
     filterQuery.$or = [

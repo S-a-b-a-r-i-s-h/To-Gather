@@ -50,7 +50,7 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
       linkedin: community?.linkedin || "",
       x: community?.x || "",
       github: community?.github || "",
-      instagram: community?.instagram || "", 
+      instagram: community?.instagram || "",
       whatsapp: community?.whatsapp || "",
       website: community?.website || "",
     },
@@ -62,7 +62,7 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
     startTransition(async () => {
       data.image = imagePreview || community?.img || "";
       // data.price = ""
-      console.log(data)
+      console.log(data);
 
       if (isEdit && community) {
         const result = await editCommunity({
@@ -120,14 +120,31 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
                 className="paragraph-semibold text-dark400_light800"
                 htmlFor="image"
               >
-                <Image
-                  src={
-                    imagePreview || community?.img || "/images/auth-dark.png"
-                  }
-                  alt="Community Image"
-                  width={140}
-                  height={70}
-                />
+                {
+                  <div className="flex-center flex-col py-5">
+                    {/* <Image
+                      src="/assets/icons/upload.svg"
+                      width={77}
+                      height={77}
+                      alt="file upload"
+                    /> */}
+                    {/* <h3 className="my-2">Drag photo here</h3> */}
+                    {/* <p className="mb-4">SVG, PNG, JPG</p> */}
+                    {imagePreview || community?.img ? (
+                      <Image
+                        src={imagePreview || community?.img || ""}
+                        alt="preview"
+                        width={1000}
+                        height={1000}
+                        className="size-[200px] w-auto rounded-md object-cover"
+                      />
+                    ) : (
+                      <p className="rounded-full bg-black px-4 py-2 text-center text-sm font-semibold text-white dark:bg-white dark:text-black">
+                        Select from computer
+                      </p>
+                    )}
+                  </div>
+                }
               </FormLabel>
               <FormControl className="">
                 <Input
@@ -184,7 +201,8 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
               <FormLabel className="paragraph-semibold text-dark400_light800">
-                Short Description <span className="primary-text-gradient">*</span>
+                Short Description{" "}
+                <span className="primary-text-gradient">*</span>
               </FormLabel>
               <FormControl>
                 <Input
@@ -225,28 +243,30 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
               <FormMessage />
             </FormItem>
           )}
-        />     
-        { <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem className="flex w-full flex-col">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
-                Price <span className="primary-text-gradient">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription className="body-regular mt-2.5 text-light-500">
-                How much does it cost to join your community?, per annum
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> }
+        />
+        {
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel className="paragraph-semibold text-dark400_light800">
+                  Price <span className="primary-text-gradient">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription className="body-regular mt-2.5 text-light-500">
+                  How much does it cost to join your community?, per annum
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        }
         <FormField
           control={form.control}
           name="linkedin"

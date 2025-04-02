@@ -6,18 +6,48 @@ import { FaSquareGithub } from "react-icons/fa6";
 import { GrLinkedin } from "react-icons/gr";
 
 import { auth } from "@/auth";
+import CommunityCard from "@/components/cards/CommunityCard";
+import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import { getAllCommunitiesByUser } from "@/lib/actions/community.action";
 import { getUserById } from "@/lib/actions/user.action";
 
-const UserDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
+
+interface Props {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string }>;
+}
+
+const UserDetails = async ({ params, searchParams }: Props) => {
   const session = await auth();
   if (!session) return redirect("/home");
 
-  const {id: userId} = await params;
+  const { id: userId } = await params;
 
   const { data: user, success } = await getUserById({ userId });
   if (!success) return notFound();
+
+  const {
+    page = "1",
+    pageSize = "2",
+    query = "",
+    filter = "",
+  } = await searchParams;
+
+  // Fetch communities
+  const { data, error } = await getAllCommunitiesByUser({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    query,
+    filter,
+    id: user?._id,
+  });
+  if (error) return notFound();
+
+  const communities = data?.communities || [];
+  const isNext = data?.isNext;
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -46,24 +76,54 @@ const UserDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
         )}
       </div>
       {user?.bio && (
-        <div>
-          <h1 className="h1-bold">Bio</h1>
+        <div className="mt-11">
+          <h1 className="h2-bold mb-3">About</h1>
           <p>{user.bio}</p>
         </div>
       )}
 
-      <div className="mb-5 flex justify-center gap-5">
-        {user?.linkedin && (
-          <Link target="_" href={user.linkedin}>
-            <GrLinkedin className="text-3xl" />
-          </Link>
-        )}
-        {user?.github && (
-          <Link target="_" href={user.github}>
-            <FaSquareGithub className="text-3xl" />
-          </Link>
+      <div className="mb-5 mt-11">
+        <h1 className="h2-bold mb-3"> Social handles </h1>
+        <div className="mb-5 flex gap-5">
+          {user?.linkedin && (
+            <Link target="_" href={user.linkedin}>
+              <GrLinkedin className="text-3xl" />
+            </Link>
+          )}
+          {user?.github && (
+            <Link target="_" href={user.github}>
+              <FaSquareGithub className="text-3xl" />
+            </Link>
+          )}
+        </div>
+        <Link
+          target="_blank"
+          href={user?.portfolio || ""}
+          className="primary-text-gradient"
+        >
+          Visit my Portfolio
+        </Link>
+      </div>
+
+      <div>
+        {communities.length > 0 && (
+          <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {communities.map((community) => (
+              <CommunityCard
+                key={community._id}
+                id={community._id}
+                title={community.title}
+                members={community.members.length}
+                secondaryAdmins={community.secondaryAdmins.length}
+                price={community.price}
+                image={community.img}
+                shortDescription={community.shortDescription}
+              />
+            ))}
+          </div>
         )}
       </div>
+      <Pagination page={page} isNext={isNext || false} />
     </div>
   );
 };

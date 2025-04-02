@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import CommunityCard from "@/components/cards/CommunityCard";
 // import HomeFilter from "@/components/filters/HomeFilter";
+import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
 import { getCommunities } from "@/lib/actions/community.action";
 
@@ -24,7 +25,7 @@ const Community = async ({ searchParams }: SearchParams) => {
 
   const { success, data, error } = await getCommunities({
     page: Number(page) || 1,
-    pageSize: Number(pageSize) || 10,
+    pageSize: Number(pageSize) || 2,
     query: query || "",
     filter: filter || "",
   });
@@ -37,7 +38,7 @@ const Community = async ({ searchParams }: SearchParams) => {
   //     id: user?.id
   //   })
 
-  const { communities } = data || {};
+  const { communities, isNext } = data || {};
   //   console.log(communities);
 
   return result?.user ? (
@@ -90,6 +91,7 @@ const Community = async ({ searchParams }: SearchParams) => {
           </p>
         </div>
       )}
+      <Pagination page={page} isNext={isNext || false} />
     </>
   ) : (
     redirect("/")
