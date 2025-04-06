@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cache, Suspense } from "react";
 
@@ -30,7 +31,6 @@ export const metadata: Metadata = {
 };
 
 const Home = async ({ searchParams }: SearchParams) => {
-  
   // Parallel fetching for auth and search params
   const [result, params] = await Promise.all([getAuth(), searchParams]);
   const { user } = result || {};
@@ -90,10 +90,19 @@ const Home = async ({ searchParams }: SearchParams) => {
                   ))}
                 </div>
               ) : (
-                <div className="mt-10 flex w-full items-center justify-center">
+                <div className="mt-10 flex w-full flex-col items-center justify-center">
                   <p className="text-dark400_light700">
                     No Communities matching <b>&quot;{query}&quot;</b>{" "}
                   </p>
+                  <div>
+                    <Link
+                      className="primary-text-gradient"
+                      href={`/create-community`}
+                    >
+                      Click Here
+                    </Link>
+                    &nbsp; to create a community
+                  </div>
                 </div>
               )}
             </div>
@@ -106,7 +115,9 @@ const Home = async ({ searchParams }: SearchParams) => {
           </p>
         </div>
       )}
-      <Pagination page={page} isNext={isNext || false} />
+      {communities && communities.length > 0 && (
+        <Pagination page={page} isNext={isNext || false} />
+      )}
     </>
   );
 };

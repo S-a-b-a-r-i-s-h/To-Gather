@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
@@ -17,26 +18,25 @@ export const metadata: Metadata = {
     "Search for communities that you are interested in and join them to start engaging with like-minded people.",
 };
 
-export async function generateStaticParams() {
-  try {
-    const { success, data } = await getCommunities({
-      page: 1,
-      pageSize: 10,
-      query: "",
-      filter: "",
-    });
+// export async function generateStaticParams() {
+//   try {
+//     const { success, data } = await getCommunities({
+//       page: 1,
+//       pageSize: 10,
+//       query: "",
+//       filter: "",
+//     });
 
-    if (!success || !data?.communities) return [];
+//     if (!success || !data?.communities) return [];
 
-    return data.communities.map((community) => ({
-      params: { id: community._id },
-    }));
-  } catch (error) {
-    console.error("Error fetching communities:", error);
-    return [];
-  }
-}
-
+//     return data.communities.map((community) => ({
+//       params: { id: community._id },
+//     }));
+//   } catch (error) {
+//     console.error("Error fetching communities:", error);
+//     return [];
+//   }
+// }
 
 const Community = async ({ searchParams }: SearchParams) => {
   const result = await auth();
@@ -84,24 +84,37 @@ const Community = async ({ searchParams }: SearchParams) => {
       </section>
       {/* <HomeFilter /> */}
       {success ? (
-        <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div>
           {communities && communities.length > 0 ? (
-            communities.map((community) => (
-              <CommunityCard
-                key={community._id}
-                id={community._id}
-                title={community.title}
-                // description={community.description}
-                members={community.members.length}
-                secondaryAdmins={community.secondaryAdmins.length}
-                price={community.price}
-                image={community.img}
-                shortDescription={community.shortDescription}
-              />
-            ))
+            <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {communities.map((community) => (
+                <CommunityCard
+                  key={community._id}
+                  id={community._id}
+                  title={community.title}
+                  // description={community.description}
+                  members={community.members.length}
+                  secondaryAdmins={community.secondaryAdmins.length}
+                  price={community.price}
+                  image={community.img}
+                  shortDescription={community.shortDescription}
+                />
+              ))}
+            </div>
           ) : (
-            <div className="mt-10 flex w-full items-center justify-center">
-              <p className="text-dark400_light700">No Communities</p>
+            <div className="mt-10 flex w-full flex-col items-center justify-center">
+              <p className="text-dark400_light700">
+                No Communities matching <b>&quot;{query}&quot;</b>{" "}
+              </p>
+              <div>
+                <Link
+                  className="primary-text-gradient"
+                  href={`/create-community`}
+                >
+                  Click Here
+                </Link>
+                &nbsp; to create a community
+              </div>
             </div>
           )}
         </div>
@@ -112,7 +125,7 @@ const Community = async ({ searchParams }: SearchParams) => {
           </p>
         </div>
       )}
-      <Pagination page={page} isNext={isNext || false} />
+      { communities && communities.length > 0 && <Pagination page={page} isNext={isNext || false} /> }
     </>
   ) : (
     redirect("/")

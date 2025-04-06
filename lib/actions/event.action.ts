@@ -120,7 +120,8 @@ export async function updateEventParticipants(
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { eventId, participantId, datadynamicFields, newGroup, groupAction } = validationResult.params!;
+  const { eventId, participantId, datadynamicFields, newGroup, groupAction } =
+    validationResult.params!;
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -132,16 +133,21 @@ export async function updateEventParticipants(
       throw new Error("Event not found");
     }
 
-    event.participants.push({participantId, dynamicFields: datadynamicFields});
+    event.participants.push({
+      participantId,
+      dynamicFields: datadynamicFields,
+    });
     if (groupAction === "create") {
       event.groupDetails.push(newGroup);
     } else if (groupAction === "join") {
       // map through the groupDetails and find the group with the same name the push the participantId to the members array
-      event.groupDetails.forEach((group: { name: string, members: string[] }) => {
-        if (group.name === newGroup.name) {
-          group.members.push(participantId);
+      event.groupDetails.forEach(
+        (group: { name: string; members: string[] }) => {
+          if (group.name === newGroup.name) {
+            group.members.push(participantId);
+          }
         }
-      });
+      );
     }
     await event.save({ session });
 
@@ -177,8 +183,8 @@ export async function getEventById(
   try {
     // Create the event
     const event = await Event.findById(eventId)
-    .populate("createdBy", "name image _id")
-    .populate("participants.participantId", "name image _id");
+      .populate("createdBy", "name image _id")
+      .populate("participants.participantId", "name image _id");
 
     if (!event) {
       throw new Error("Failed to create Event");
@@ -314,6 +320,67 @@ export async function getEventsByUserId(
 
     console.log("filterQuery is" + filterQuery);
     console.log("events are" + events);
+
+    const isNext = totalEvents > skip + events.length;
+
+    return {
+      success: true,
+      data: { events: JSON.parse(JSON.stringify(events)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getEvents(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ events: Events[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+
+  const filterQuery: FilterQuery<typeof Event> = {};
+
+  if (query) {
+    filterQuery.$or = [
+      { title: { $regex: new RegExp(query, "i") } },
+      // { description: { $regex: new RegExp(query, "i") } },
+    ];
+  }
+
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "individual":
+      filterQuery.type = "individual";
+      sortCriteria = { createdAt: -1 };
+      break;
+    case "group":
+      filterQuery.type = "group";
+      sortCriteria = { createdAt: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+
+  try {
+    const totalEvents = await Event.countDocuments(filterQuery);
+
+    const events = await Event.find(filterQuery)
+      .lean()
+      .sort(sortCriteria)
+      .skip(skip)
+      .limit(limit);
 
     const isNext = totalEvents > skip + events.length;
 

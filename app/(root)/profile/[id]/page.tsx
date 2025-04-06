@@ -125,7 +125,7 @@ const UserDetails = async ({ params, searchParams }: Props) => {
           </div>
         )}
       </div>
-      <Pagination page={page} isNext={isNext || false} />
+      { communities && communities.length > 0 && <Pagination page={page} isNext={isNext || false} /> }
     </div>
   );
 };
