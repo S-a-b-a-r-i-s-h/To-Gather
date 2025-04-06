@@ -20,20 +20,22 @@ interface Props {
 }
 
 const UserDetails = async ({ params, searchParams }: Props) => {
-  const session = await auth();
+  // Parallel fetching for auth, params and searchParams
+  const [session, param, searchParam] = await Promise.all([auth(), params, searchParams]);
+
   if (!session) return redirect("/home");
 
-  const { id: userId } = await params;
-
-  const { data: user, success } = await getUserById({ userId });
-  if (!success) return notFound();
+  const { id: userId } = param;
 
   const {
     page = "1",
     pageSize = "2",
     query = "",
     filter = "",
-  } = await searchParams;
+  } = searchParam;
+
+  const { data: user, success } = await getUserById({ userId });
+  if (!success) return notFound();
 
   // Fetch communities
   const { data, error } = await getAllCommunitiesByUser({

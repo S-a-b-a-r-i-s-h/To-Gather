@@ -1,14 +1,15 @@
-// import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
-import { cache } from "react";
+import { cache, Suspense } from "react";
 
 import { auth } from "@/auth";
 // import CommunityCard from "@/components/cards/CommunityCard";
 // import LocalSearch from "@/components/search/LocalSearch";
 import Pagination from "@/components/Pagination";
 import { getCommunitiesByUser } from "@/lib/actions/community.action";
+
+// import Loading from "./loading";
 
 // import Loading from "./loading";
 
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
 };
 
 const Home = async ({ searchParams }: SearchParams) => {
+  
   // Parallel fetching for auth and search params
   const [result, params] = await Promise.all([getAuth(), searchParams]);
   const { user } = result || {};
@@ -44,9 +46,6 @@ const Home = async ({ searchParams }: SearchParams) => {
     filter,
     id: user?.id,
   });
-
-  // const communities = data?.communities || [];
-  // const isNext = data?.isNext;
   const { communities, isNext } = data || { communities: [], isNext: false };
 
   // const loading = true;
@@ -67,37 +66,39 @@ const Home = async ({ searchParams }: SearchParams) => {
       </section>
 
       {success ? (
-        <div>
-          {communities.length > 0 && (
-            <h1 className="primary-text-gradient h2-bold mt-10 inline-block">
-              Admin
-            </h1>
-          )}
+        <Suspense>
           <div>
-            {communities.length > 0 ? (
-              <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {communities.map((community) => (
-                  <CommunityCard
-                    key={community._id}
-                    id={community._id}
-                    title={community.title}
-                    members={community.members.length}
-                    secondaryAdmins={community.secondaryAdmins.length}
-                    price={community.price}
-                    image={community.img}
-                    shortDescription={community.shortDescription}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="mt-10 flex w-full items-center justify-center">
-                <p className="text-dark400_light700">
-                  No Communities matching <b>&quot;{query}&quot;</b>{" "}
-                </p>
-              </div>
+            {communities.length > 0 && (
+              <h1 className="primary-text-gradient h2-bold mt-10 inline-block">
+                Admin
+              </h1>
             )}
+            <div>
+              {communities.length > 0 ? (
+                <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {communities.map((community) => (
+                    <CommunityCard
+                      key={community._id}
+                      id={community._id}
+                      title={community.title}
+                      members={community.members.length}
+                      secondaryAdmins={community.secondaryAdmins.length}
+                      price={community.price}
+                      image={community.img}
+                      shortDescription={community.shortDescription}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-10 flex w-full items-center justify-center">
+                  <p className="text-dark400_light700">
+                    No Communities matching <b>&quot;{query}&quot;</b>{" "}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </Suspense>
       ) : (
         <div className="mt-10 flex w-full items-center justify-center">
           <p className="text-dark400_light700">

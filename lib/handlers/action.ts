@@ -25,7 +25,6 @@ async function action<T>({
   authorize = false,
 }: ActionOptions<T>) {
   if (schema && params) {
-    console.log("Params being validated:", params);
     try {
       schema.parse(params);
     } catch (error) {

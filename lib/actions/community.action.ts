@@ -265,7 +265,7 @@ export async function getCommunitiesByUser(
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }
-
+  console.log("inside getCommunitiesByUser action");
   const { page = 1, pageSize = 2, query, filter, id } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);

@@ -19,4 +19,9 @@ export const sidebarLinks = [
       route: "/profile",
       label: "Profile",
     },
+    {
+      imgURL: "/icons/suitcase.svg",
+      route: "/events",
+      label: "Events",
+    }
   ];

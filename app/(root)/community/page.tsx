@@ -17,6 +17,27 @@ export const metadata: Metadata = {
     "Search for communities that you are interested in and join them to start engaging with like-minded people.",
 };
 
+export async function generateStaticParams() {
+  try {
+    const { success, data } = await getCommunities({
+      page: 1,
+      pageSize: 10,
+      query: "",
+      filter: "",
+    });
+
+    if (!success || !data?.communities) return [];
+
+    return data.communities.map((community) => ({
+      params: { id: community._id },
+    }));
+  } catch (error) {
+    console.error("Error fetching communities:", error);
+    return [];
+  }
+}
+
+
 const Community = async ({ searchParams }: SearchParams) => {
   const result = await auth();
   //   const { user }  = result || {};

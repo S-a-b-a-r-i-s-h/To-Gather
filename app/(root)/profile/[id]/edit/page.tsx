@@ -3,6 +3,7 @@ import React from "react";
 
 import { auth } from "@/auth";
 import UserForm from "@/components/forms/UserForm";
+import ROUTES from "@/constants/routes";
 import { getUserById } from "@/lib/actions/user.action";
 
 const EditProfile = async ({ params }: RouteParams) => {
@@ -14,6 +15,10 @@ const EditProfile = async ({ params }: RouteParams) => {
 
   const { data: user, success } = await getUserById({ userId: id });
   if (!success) return notFound();
+
+  if (session?.user?.id !== user?._id) {
+    return redirect(ROUTES.PROFILE(id));
+  }
 
   return (
     <main>

@@ -29,7 +29,6 @@ export async function getUserById(
   session.startTransaction();
 
   try {
-    // Create the event
     const user = await User.findById(userId);
 
     if (!user) {

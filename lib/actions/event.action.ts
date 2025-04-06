@@ -259,3 +259,69 @@ export async function getEventsByCommunityId(
     return handleError(error) as ErrorResponse;
   }
 }
+
+export async function getEventsByUserId(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ events: Events[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { page = 1, pageSize = 10, query, filter, id } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+
+  const filterQuery: FilterQuery<typeof Event> = { createdBy: id };
+
+  if (query) {
+    filterQuery.$or = [
+      { title: { $regex: new RegExp(query, "i") } },
+      // { description: { $regex: new RegExp(query, "i") } },
+    ];
+  }
+
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "individual":
+      filterQuery.type = "individual";
+      sortCriteria = { createdAt: -1 };
+      break;
+    case "group":
+      filterQuery.type = "group";
+      sortCriteria = { createdAt: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+
+  try {
+    const totalEvents = await Event.countDocuments(filterQuery);
+    console.log(totalEvents);
+    console.log("id is" + id);
+
+    const events = await Event.find(filterQuery)
+      .lean()
+      .sort(sortCriteria)
+      .skip(skip)
+      .limit(limit);
+
+    console.log("filterQuery is" + filterQuery);
+    console.log("events are" + events);
+
+    const isNext = totalEvents > skip + events.length;
+
+    return {
+      success: true,
+      data: { events: JSON.parse(JSON.stringify(events)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}

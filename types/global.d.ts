@@ -49,7 +49,7 @@ interface Events {
       value?: string | number | string[];
     }[] | []; // Reflect schema's default
   }[] | [];
-  communityId: string;
+  community: string;
   createdBy: string;
   groupDetails?: {
     name?: string;
