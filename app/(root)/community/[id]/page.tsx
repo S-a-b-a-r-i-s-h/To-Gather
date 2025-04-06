@@ -19,7 +19,7 @@ import MemberJoin from "@/components/MemberJoin";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constants/routes";
-import { getCommunity } from "@/lib/actions/community.action";
+import { getCommunities, getCommunity } from "@/lib/actions/community.action";
 
 type User = {
   name: string;
@@ -49,12 +49,35 @@ export async function generateMetadata({ params }: RouteParams) {
   };
 }
 
+
+export async function generateStaticParams() {
+  try {
+    const { success, data } = await getCommunities({
+      page: 1,
+      pageSize: 10,
+      query: "",
+      filter: "",
+    });
+
+    if (!success || !data?.communities) return [];
+
+    return data.communities.map((community) => ({
+      params: { id: community._id },
+    }));
+  } catch (error) {
+    console.error("Error fetching communities:", error);
+    return [];
+  }
+}
+
 const CommunityDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
   if (!id) return notFound();
 
   const session = await auth();
   if (!session) return redirect("/home");
+
+  console.log("Inside CommunityId "+ typeof(id))
 
   const { data: community, success } = await getCommunity({ communityId: id });
   if (!success) return notFound();
