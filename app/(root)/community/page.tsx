@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -16,6 +16,12 @@ export const metadata: Metadata = {
   title: "To-Gather | Communities",
   description:
     "Search for communities that you are interested in and join them to start engaging with like-minded people.",
+    openGraph: {
+      title: "To-Gather | Communities",
+      description:
+        "Search for communities that you are interested in and join them to start engaging with like-minded people.",
+      url: "https://tgcommunity.vercel.app/community",
+    }
 };
 
 // export async function generateStaticParams() {

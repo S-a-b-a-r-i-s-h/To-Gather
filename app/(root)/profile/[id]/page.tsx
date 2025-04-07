@@ -13,13 +13,14 @@ import ROUTES from "@/constants/routes";
 import { getAllCommunitiesByUser } from "@/lib/actions/community.action";
 import { getUserById } from "@/lib/actions/user.action";
 
-
 interface Props {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string }>;
 }
 
-export async function generateMetadata({ params }: RouteParams) {
+export async function generateMetadata(
+  { params }: RouteParams
+) {
   const { id: userId } = await params;
   if (!userId) return notFound();
 
@@ -39,18 +40,17 @@ export async function generateMetadata({ params }: RouteParams) {
 
 const UserDetails = async ({ params, searchParams }: Props) => {
   // Parallel fetching for auth, params and searchParams
-  const [session, param, searchParam] = await Promise.all([auth(), params, searchParams]);
+  const [session, param, searchParam] = await Promise.all([
+    auth(),
+    params,
+    searchParams,
+  ]);
 
   if (!session) return redirect("/home");
 
   const { id: userId } = param;
 
-  const {
-    page = "1",
-    pageSize = "2",
-    query = "",
-    filter = "",
-  } = searchParam;
+  const { page = "1", pageSize = "2", query = "", filter = "" } = searchParam;
 
   const { data: user, success } = await getUserById({ userId });
   if (!success) return notFound();
@@ -143,7 +143,9 @@ const UserDetails = async ({ params, searchParams }: Props) => {
           </div>
         )}
       </div>
-      { communities && communities.length > 0 && <Pagination page={page} isNext={isNext || false} /> }
+      {communities && communities.length > 0 && (
+        <Pagination page={page} isNext={isNext || false} />
+      )}
     </div>
   );
 };
