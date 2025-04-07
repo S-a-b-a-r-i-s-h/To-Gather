@@ -15,21 +15,29 @@ type User = {
   _id: string;
 };
 type PopulatedEvent = Events & {
+  dynamicFields?: {
+    namelabel?: string;
+    label?: string;
+    type?: "text" | "number" | "select" | "textarea";
+    options?: string[] | undefined;
+    value?: string | number | string[];
+  }[] | [];
+
   createdBy: User;
   participants: Array<{
-    participantId: User;
+    participantId: { _id: string; name: string; image: string };
     dynamicFields: Array<{
       label: string;
       value: string | number | string[];
       options?: string[];
       namelabel?: string;
       type?: "text" | "number" | "select" | "textarea";
-    }>;
-    groupDetails?: Array<{
-      name: string;
-      members: User[];
-      _id: string;
-    }>;
+    }>;  
+  }>;
+  groupDetails?: Array<{
+    name: string;
+    members: {_id: string; name: string; image: string}[];
+    _id: string;
   }>;
 };
 
@@ -185,7 +193,7 @@ const EventDetails = async ({
                       {group.members &&
                         group.members.length > 0 &&
                         session?.user?.id &&
-                        (group.members.includes(session.user.id) ? (
+                        (group.members.some(member => member._id === session?.user?.id) ? (
                           <p className="text-gray-800">{group._id}</p>
                         ) : (
                           <p className="text-gray-800">id: Only members can view id.</p>
@@ -193,34 +201,11 @@ const EventDetails = async ({
                     </div>
                     <p className="font-semibold text-gray-800">Members:</p>
                     {group.members?.map((member) => (
-                      // <UserAvatar
-                      //   key={member._id}
-                      //   id={member._id}
-                      //   image={member.image}
-                      //   name={member.name}
-                      //   className="size-10 rounded-full"
-                      // />
                       <div key={member._id} className="flex items-center gap-4">
                         <p>{member.name}</p>
-                        {/* <p>{member._id}</p> */}
                       </div>
                     ))}
                   </div>
-                  {/* <div className="w-full">
-                {participant.dynamicFields?.map((field, fieldIndex) => (
-                  <div
-                    key={fieldIndex}
-                    className="flex flex-col border-b py-2 last:border-b-0"
-                  >
-                    <span className="font-medium text-gray-600">
-                      {field.label}:
-                    </span>
-                    <span className="break-words text-gray-800">
-                      {field.value}
-                    </span>
-                  </div>
-                ))}
-              </div> */}
                 </div>
               ))}
             </div>

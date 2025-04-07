@@ -55,7 +55,7 @@ interface Events {
     _id?: string;
     name?: string;
     members?: string[];
-  }[];
+  }[] | [];
 }
 
 interface User {
