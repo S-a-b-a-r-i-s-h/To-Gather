@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
@@ -7,6 +8,7 @@ import { auth } from "@/auth";
 // import Navbar from "@/components/navigation/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import ThemeProvider from "@/context/Theme";
+
 // import ROUTES from "@/constants/routes";
 
 const montserrat = localFont({
@@ -20,7 +22,17 @@ const robotoslab = localFont({
   weight: "100 200 300 400 500 600 700 800 900",
 });
 
-
+export const metadata: Metadata = {
+  title: "App layout | To-Gather",
+  description: "A platform to create and manage communities, events, profiles.",
+  openGraph: {
+    type: "website",
+    title: "App Layout | To-Gather",
+    description:
+      "Your home page where you can view communities that you are a part of.",
+    url: "https://tgcommunity.vercel.app",
+  },
+};
 
 export default async function RootLayout({
   children,
@@ -42,7 +54,6 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            
             {children}
           </ThemeProvider>
         </body>

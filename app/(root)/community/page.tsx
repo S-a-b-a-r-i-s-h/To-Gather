@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   description:
     "Search for communities that you are interested in and join them to start engaging with like-minded people.",
     openGraph: {
+      type: "website",
       title: "To-Gather | Communities",
       description:
         "Search for communities that you are interested in and join them to start engaging with like-minded people.",

@@ -17,12 +17,6 @@ import { getCommunitiesByUser } from "@/lib/actions/community.action";
 // Consider dynamic imports for components that aren't immediately needed
 const CommunityCard = dynamic(() => import("@/components/cards/CommunityCard"));
 const LocalSearch = dynamic(() => import("@/components/search/LocalSearch"));
-// Cache auth result
-const getAuth = cache(() => auth());
-
-interface SearchParams {
-  searchParams: Promise<{ [key: string]: string }>;
-}
 
 export const metadata: Metadata = {
   title: "To-Gather | Home",
@@ -36,6 +30,13 @@ export const metadata: Metadata = {
     url: "https://tgcommunity.vercel.app/home",
   }
 };
+
+// Cache auth result
+const getAuth = cache(() => auth());
+
+interface SearchParams {
+  searchParams: Promise<{ [key: string]: string }>;
+}
 
 const Home = async ({ searchParams }: SearchParams) => {
   // Parallel fetching for auth and search params

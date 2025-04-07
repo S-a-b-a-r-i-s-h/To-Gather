@@ -7,7 +7,7 @@ import LeftSidebar from "@/components/navigation/LeftSidebar";
 import Navbar from "@/components/navigation/navbar";
 
 export const metadata: Metadata = {
-  title: "To-Gather Root",
+  title: " Root Layout | To-Gather Root",
   description: "A platform to create and manage communities, events, profiles.",
   openGraph: {
     type: "website",

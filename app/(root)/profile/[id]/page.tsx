@@ -31,6 +31,7 @@ export async function generateMetadata(
     title: `${user?.name} | Profile`,
     description: user?.bio,
     openGraph: {
+      type: "website",
       title: `${user?.name} | Profile`,
       description: user?.bio,
       url: `https://tgcommunity.vercel.app/profile/${userId}`,
