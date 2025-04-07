@@ -9,6 +9,7 @@ const page = async ({ params }: RouteParams) => {
   const session = await auth();
   if (!session?.user) return redirect("/");
   const {id} = await params;
+
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Provide necessary details to create an event</h1>

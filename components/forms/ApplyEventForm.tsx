@@ -34,6 +34,7 @@ interface Props {
   eventId: string;
   eventType: string;
   communityId: string;
+  groups: { name: string; members: string[] }[];
 }
 
 const ApplyEventForm = ({
@@ -42,6 +43,7 @@ const ApplyEventForm = ({
   eventId,
   eventType,
   communityId,
+  groups
 }: Props) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof ApplyEventSchema>>({
@@ -74,13 +76,13 @@ const ApplyEventForm = ({
         groupDetails[0].members.push(participantId);
       }
     }
-    console.log("Submitted Data: dynamicField", data.dynamicFields);
-    console.log({
-      participantId,
-      dynamicFields: data.dynamicFields,
-    });
+    // console.log("Submitted Data: dynamicField", data.dynamicFields);
+    // console.log({
+    //   participantId,
+    //   dynamicFields: data.dynamicFields,
+    // });
     const datadynamicFields = data.dynamicFields;
-    console.log("datadynamicFields", datadynamicFields);
+    // console.log("datadynamicFields", datadynamicFields);
 
     const groupAction = form.getValues("groupAction");
     let newGroup: { name: string; members: string[] } = {
@@ -132,7 +134,7 @@ const ApplyEventForm = ({
       if (result.success) {
         toast({
           title: "Success",
-          description: "Community created successfully",
+          description: "Event participation updated successfully",
         });
 
         if (result.data) router.push(`/community/${communityId}/event/${eventId}`);
@@ -145,6 +147,7 @@ const ApplyEventForm = ({
       }
     });
   };
+  console.log(groups, "groups")
 
   return (
     <Form {...form}>
@@ -241,7 +244,6 @@ const ApplyEventForm = ({
             </div>
           </div>
         )}
-
         <button
           type="submit"
           className="primary-bg-gradient w-fit rounded-lg px-4 py-2"

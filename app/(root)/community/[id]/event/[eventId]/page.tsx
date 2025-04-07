@@ -25,6 +25,11 @@ type PopulatedEvent = Events & {
       namelabel?: string;
       type?: "text" | "number" | "select" | "textarea";
     }>;
+    groupDetails?: Array<{
+      name: string;
+      members: User[];
+      _id: string;
+    }>;
   }>;
 };
 
@@ -50,7 +55,8 @@ const EventDetails = async ({
       (participant) => participant?.participantId?._id !== session?.user?.id
     );
 
-    console.log("participant", populatedEvent?.participants)
+  // console.log("participant", populatedEvent?.participants);
+  console.log("groups", populatedEvent?.groupDetails);
 
   const backendDate = event?.date;
   const formattedDate = backendDate
@@ -119,28 +125,88 @@ const EventDetails = async ({
           </div>
         </div>
       </section>
-      {populatedEvent.participants.length > 0 && <div className="mt-16">
-        <h1 className="h1-bold mb-5">Participants</h1>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {populatedEvent.participants.map((participant) => (
-            <div
-              key={participant.participantId._id}
-              className="flex flex-col items-start gap-4 rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105"
-            >
-              <div className="flex items-center gap-4">
-                <UserAvatar
-                  id={participant.participantId._id}
-                  image={participant.participantId.image}
-                  name={participant.participantId.name}
-                  className="size-10 rounded-full"
-                />
-                <div>
-                  <p className="text-lg font-semibold text-gray-800">
-                    {participant.participantId.name}
-                  </p>
+      {populatedEvent.participants.length > 0 && (
+        <div className="mt-16">
+          <h1 className="h1-bold mb-5">Participants</h1>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {populatedEvent.participants.map((participant) => (
+              <div
+                key={participant.participantId._id}
+                className="flex flex-col items-start gap-4 rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105"
+              >
+                <div className="flex items-center gap-4">
+                  <UserAvatar
+                    id={participant.participantId._id}
+                    image={participant.participantId.image}
+                    name={participant.participantId.name}
+                    className="size-10 rounded-full"
+                  />
+                  <div>
+                    <p className="text-lg font-semibold text-gray-800">
+                      {participant.participantId.name}
+                    </p>
+                  </div>
+                </div>
+                <div className="w-full">
+                  {participant.dynamicFields?.map((field, fieldIndex) => (
+                    <div
+                      key={fieldIndex}
+                      className="flex flex-col border-b py-2 last:border-b-0"
+                    >
+                      <span className="font-medium text-gray-600">
+                        {field.label}:
+                      </span>
+                      <span className="break-words text-gray-800">
+                        {field.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="w-full">
+            ))}
+          </div>
+        </div>
+      )}
+      {populatedEvent.groupDetails &&
+        populatedEvent?.groupDetails?.length > 0 && (
+          <div className="mt-16">
+            <h1 className="h1-bold mb-5">Groups</h1>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {populatedEvent.groupDetails.map((group) => (
+                <div
+                  key={group._id}
+                  className="flex flex-col items-start gap-4 rounded-lg bg-white p-6 shadow-lg transition-transform hover:scale-105"
+                >
+                  <div className="flex flex-col gap-4 text-gray-800">
+                    <div>
+                      <p className="text-lg font-semibold text-gray-800">
+                        {group.name}
+                      </p>
+                      {group.members &&
+                        group.members.length > 0 &&
+                        session?.user?.id &&
+                        (group.members.includes(session.user.id) ? (
+                          <p className="text-gray-800">{group._id}</p>
+                        ) : (
+                          <p className="text-gray-800">id: Only members can view id.</p>
+                        ))}
+                    </div>
+                    <p className="font-semibold text-gray-800">Members:</p>
+                    {group.members?.map((member) => (
+                      // <UserAvatar
+                      //   key={member._id}
+                      //   id={member._id}
+                      //   image={member.image}
+                      //   name={member.name}
+                      //   className="size-10 rounded-full"
+                      // />
+                      <div key={member._id} className="flex items-center gap-4">
+                        <p>{member.name}</p>
+                        {/* <p>{member._id}</p> */}
+                      </div>
+                    ))}
+                  </div>
+                  {/* <div className="w-full">
                 {participant.dynamicFields?.map((field, fieldIndex) => (
                   <div
                     key={fieldIndex}
@@ -154,11 +220,12 @@ const EventDetails = async ({
                     </span>
                   </div>
                 ))}
-              </div>
+              </div> */}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>}
+          </div>
+        )}
     </>
   );
 };

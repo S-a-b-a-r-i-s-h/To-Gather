@@ -20,6 +20,7 @@ const page = async ({
   const { data: event, success } = await getEventById({ eventId });
   if (!success) return notFound();
   const eventType = event?.type;
+  const groups = event?.groupDetails;
 
   return (
     <div>
@@ -31,6 +32,14 @@ const page = async ({
         eventId={eventId}
         communityId={id}
         eventType={eventType || ""}
+        groups={
+          Array.isArray(groups)
+            ? groups.map(group => ({
+                name: group.name || "",
+                members: group.members || [],
+              }))
+            : []
+        }
       />
     </div>
   );

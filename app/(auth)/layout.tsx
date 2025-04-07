@@ -1,9 +1,9 @@
+import Image from "next/image";
 import { ReactNode } from "react";
 
 import SocialAuthForm from "@/components/forms/SocialAuthForm";
 import { Toaster } from "@/components/ui/toaster";
 
-// import SocialAuthForm from "@/components/forms/SocialAuthForm";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -16,14 +16,13 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
               To get your questions answered
             </p>
           </div>
-          {/* <Image
-            src="images/site-logo.svg"
-            alt="DevFlow Logo"
+          <Image
+            src="/images/logo.png"
+            alt="To-Gather Logo"
             width={50}
             height={50}
             className="object-contain"
-          /> */}
-          <h1>LOGO</h1>
+          />
         </div>
 
         {children}

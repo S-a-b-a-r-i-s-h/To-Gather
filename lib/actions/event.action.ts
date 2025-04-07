@@ -141,13 +141,27 @@ export async function updateEventParticipants(
       event.groupDetails.push(newGroup);
     } else if (groupAction === "join") {
       // map through the groupDetails and find the group with the same name the push the participantId to the members array
-      event.groupDetails.forEach(
-        (group: { name: string; members: string[] }) => {
-          if (group.name === newGroup.name) {
-            group.members.push(participantId);
-          }
+      // event.groupDetails.forEach(
+      //   (group: { name: string; members: string[]; _id: string }) => {
+      //     if (group._id === newGroup.name) {
+      //       group.members.push(participantId);
+      //     }
+      //   }
+      // );
+      // const groupToUpdate = event.groupDetails.find(
+      //   (group: { name: string; members: string[]; _id: string }) => group._id === newGroup.name
+      // );
+      // console.log("groupToUpdate", groupToUpdate);
+      // if (groupToUpdate) {
+      //   groupToUpdate.members = [...groupToUpdate.members, participantId];
+      // }
+      event.groupDetails.forEach((group: { name: string; members: string[]; _id: string}) => {
+        if (group._id.toString() === newGroup.name) {
+          group.members.push(participantId);
+        } else {
+          console.log("Group not found", group._id.toString(), newGroup.name);
         }
-      );
+      })
     }
     await event.save({ session });
 
@@ -184,7 +198,8 @@ export async function getEventById(
     // Create the event
     const event = await Event.findById(eventId)
       .populate("createdBy", "name image _id")
-      .populate("participants.participantId", "name image _id");
+      .populate("participants.participantId", "name image _id")
+      .populate("groupDetails.members", "name image _id")
 
     if (!event) {
       throw new Error("Failed to create Event");

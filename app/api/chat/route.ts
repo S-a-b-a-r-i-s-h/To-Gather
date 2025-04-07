@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   // console.log("Generated Stream:", stream);
 
   // return stream?.toDataStreamResponse();
-  console.log(buildGoogleGenAiPrompt(messages));
+  // console.log(buildGoogleGenAiPrompt(messages));
   try {
     const stream = streamText({
       model: google("gemini-1.5-pro-latest"),

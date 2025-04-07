@@ -52,9 +52,10 @@ interface Events {
   community: string;
   createdBy: string;
   groupDetails?: {
+    _id?: string;
     name?: string;
     members?: string[];
-  };
+  }[];
 }
 
 interface User {

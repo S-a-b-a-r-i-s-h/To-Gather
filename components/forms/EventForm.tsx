@@ -73,10 +73,10 @@ const EventForm = ({ userId, paramsId }: Props) => {
       communityId: paramsId,
       createdBy: userId,
       groupDetails: [
-        {
-          name: "",
-          members: [],
-        },
+        // {
+        //   name: "",
+        //   members: [],
+        // },
       ],
       // inputType: "text",
     },

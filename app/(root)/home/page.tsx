@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { cache, Suspense } from "react";
+import { cache } from "react";
 
 import { auth } from "@/auth";
 // import CommunityCard from "@/components/cards/CommunityCard";
@@ -66,7 +66,7 @@ const Home = async ({ searchParams }: SearchParams) => {
       </section>
 
       {success ? (
-        <Suspense>
+        // <Suspense>
           <div>
             {communities.length > 0 && (
               <h1 className="primary-text-gradient h2-bold mt-10 inline-block">
@@ -91,10 +91,19 @@ const Home = async ({ searchParams }: SearchParams) => {
                 </div>
               ) : (
                 <div className="mt-10 flex w-full flex-col items-center justify-center">
-                  <p className="text-dark400_light700">
-                    No Communities matching <b>&quot;{query}&quot;</b>{" "}
-                  </p>
+                    {
+                      query ? (
+                        <p className="text-dark400_light700">
+                          No Communities matching <b>&quot;{query}&quot;</b> 
+                        </p>
+                      ) : (
+                        <p className="text-dark400_light700">
+                          No Communities found
+                        </p>
+                      )
+                    }
                   <div>
+                    
                     <Link
                       className="primary-text-gradient"
                       href={`/create-community`}
@@ -107,7 +116,7 @@ const Home = async ({ searchParams }: SearchParams) => {
               )}
             </div>
           </div>
-        </Suspense>
+        // </Suspense>
       ) : (
         <div className="mt-10 flex w-full items-center justify-center">
           <p className="text-dark400_light700">

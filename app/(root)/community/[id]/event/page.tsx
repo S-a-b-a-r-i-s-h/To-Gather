@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -59,24 +60,37 @@ const page = async ({ params, searchParams }: EventPageProps) => {
               Admin
             </h1>
           )} */}
-          <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          <div>
             {events && events.length > 0 ? (
-              events.map((event) => (
-                <EventCard
-                  key={event._id}
-                  communityId={id}
-                  eventId={event._id}
-                  title={event.title}
-                  description={event.description}
-                  // price={event.price}
-                  date={event.date}
-                  imageUrl={event.imageUrl}
-                  eventType={event.type}
-                />
-              ))
+              <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {events.map((event) => (
+                  <EventCard
+                    key={event._id}
+                    communityId={id}
+                    eventId={event._id}
+                    title={event.title}
+                    description={event.description}
+                    // price={event.price}
+                    date={event.date}
+                    imageUrl={event.imageUrl}
+                    eventType={event.type}
+                  />
+                ))}
+              </div>
             ) : (
-              <div className="mt-10 flex w-full items-center justify-center">
-                <p className="text-dark400_light700">No Events</p>
+              <div className="mt-10 flex w-full flex-col items-center justify-center">
+                <p className="text-dark400_light700">
+                  No Events matching <b>&quot;{query}&quot;</b>{" "}
+                </p>
+                <div>
+                  <Link
+                    className="primary-text-gradient"
+                    href={`/community/${id}/create-event`}
+                  >
+                    Click Here
+                  </Link>
+                  &nbsp; to create an event
+                </div>
               </div>
             )}
           </div>

@@ -1,4 +1,5 @@
 // import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -8,28 +9,34 @@ import UserAvatar from "@/components/UserAvatar";
 import MobileNavigation from "./MobileNavigation";
 import Theme from "./Theme";
 
-interface Props{
+interface Props {
   route?: string;
 }
 
-const Navbar = async ({route}: Props) => {
+const Navbar = async ({ route }: Props) => {
   const session = await auth();
   const userId = session?.user?.id;
   console.log("route", route);
 
   return (
-    <nav className=" flex-between fixed top-0 z-50 w-full gap-5 bg-transparent p-5 sm:px-12">
-      <Link href={`${!userId ? '/' : '/home'}`} className="flex items-center gap-1">
-        {/* <Image
-          src="/images/site-logo.svg"
-          width={23}
-          height={23}
-          alt="DevFlow Logo"
-        /> */}
+    <nav className=" flex-between fixed top-0 z-50 w-full gap-5 bg-transparent p-5 sm:pr-12">
+      <Link
+        href={`${!userId ? "/" : "/home"}`}
+        className="flex items-center gap-1"
+      >
+        <Image
+          src="/images/logo.png"
+          width={60}
+          height={60}
+          alt="To-Gather Logo"
+        />
 
-        <p className="primary-text-gradient font-robotoslab text-3xl font-medium">
+        <p className="primary-text-gradient hidden font-robotoslab text-2xl font-medium lg:block">
           To-Gather
         </p>
+        {/* <Image 
+          src = "/assets/images/logo.png"
+        /> */}
       </Link>
 
       <div className="flex-between gap-5">
