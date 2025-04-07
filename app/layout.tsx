@@ -23,7 +23,15 @@ const robotoslab = localFont({
 
 export const metadata: Metadata = {
   title: "To-Gather",
-  description: "A community management platform that enables users to create, join, and manage communities, events along with their profiles. ",
+  description:
+    "A platform to create and manage communities, events, profiles.",
+  openGraph: {
+    type: "website",
+    title: "To-Gather",
+    description:
+      "Your home page where you can view communities that you are a part of.",
+    url: "https://tgcommunity.vercel.app",
+  }
 };
 
 export default async function RootLayout({
