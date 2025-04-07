@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: RouteParams) {
     openGraph: {
       title: `${user?.name} | Profile`,
       description: user?.bio,
-      url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${userId}`,
+      url: `https://tgcommunity.vercel.app/profile/${userId}`,
       images: user?.image ? [user.image] : [],
     },
   };
