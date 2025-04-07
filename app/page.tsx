@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 // import { redirect } from "next/navigation";
 // import { auth } from "@/auth";
@@ -34,6 +35,17 @@ const features = [
   },
 ];
 
+export const metadata: Metadata = {
+  title: "To-Gather",
+  description: "A platform to create and manage communities, events, profiles.",
+  openGraph: {
+    type: "website",
+    title: "To-Gather",
+    description:
+      "Your home page where you can view communities that you are a part of.",
+    url: "https://tgcommunity.vercel.app",
+  },
+};
 export default async function Home() {
   const session = await auth();
   const userId = session?.user?.id;
