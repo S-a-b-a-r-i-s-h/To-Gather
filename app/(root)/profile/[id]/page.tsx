@@ -33,7 +33,6 @@ export async function generateMetadata({ params }: RouteParams) {
       title: `${user?.name} | Profile`,
       description: user?.bio,
       url: `https://tgcommunity.vercel.app/profile/${userId}`,
-      images: user?.image ? [user.image] : [],
     },
   };
 }
