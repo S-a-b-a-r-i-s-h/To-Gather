@@ -28,6 +28,12 @@ export const metadata: Metadata = {
   title: "To-Gather | Home",
   description:
     "Your home page where you can view communities that you are a part of.",
+  openGraph: {
+    title: "To-Gather | Home",
+    description:
+      "Your home page where you can view communities that you are a part of.",
+    url: "/home",
+  }
 };
 
 const Home = async ({ searchParams }: SearchParams) => {
