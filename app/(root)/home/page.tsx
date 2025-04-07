@@ -29,10 +29,11 @@ export const metadata: Metadata = {
   description:
     "Your home page where you can view communities that you are a part of.",
   openGraph: {
+    type: "website",
     title: "To-Gather | Home",
     description:
       "Your home page where you can view communities that you are a part of.",
-    url: "/home",
+    url: "https://tgcommunity.vercel.app/home",
   }
 };
 
