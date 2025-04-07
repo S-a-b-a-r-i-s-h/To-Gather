@@ -19,6 +19,25 @@ interface Props {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
+export async function generateMetadata({ params }: RouteParams) {
+  const { id: userId } = await params;
+  if (!userId) return notFound();
+
+  const { data: user, success } = await getUserById({ userId });
+  if (!success) return notFound();
+
+  return {
+    title: `${user?.name} | Profile`,
+    description: user?.bio,
+    openGraph: {
+      title: `${user?.name} | Profile`,
+      description: user?.bio,
+      url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/profile/${userId}`,
+      images: user?.image ? [user.image] : [],
+    },
+  };
+}
+
 const UserDetails = async ({ params, searchParams }: Props) => {
   // Parallel fetching for auth, params and searchParams
   const [session, param, searchParam] = await Promise.all([auth(), params, searchParams]);
