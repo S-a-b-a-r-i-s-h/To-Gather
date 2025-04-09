@@ -44,6 +44,9 @@ export const metadata: Metadata = {
     description:
       "Your home page where you can view communities that you are a part of.",
     url: "https://tgcommunity.vercel.app",
+    images: [{
+      url: "https://tgcommunity.vercel.app/opengraph-image.png"
+    }]
   },
 };
 export default async function Home() {
