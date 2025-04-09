@@ -39,6 +39,7 @@ export const metadata: Metadata = {
   title: "App Page | To-Gather",
   description: "A platform to create and manage communities, events, profiles.",
   openGraph: {
+    siteName: "To-Gather",
     type: "website",
     title: " App Page | To-Gather",
     description:
