@@ -1,39 +1,42 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+// import Link from "next/link";
 // import { redirect } from "next/navigation";
 // import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import Features from "@/components/Features";
+// import Features from "@/components/Features";
+import Hero from "@/components/front-page/Hero";
 import Navbar from "@/components/navigation/navbar";
 import ROUTES from "@/constants/routes";
 
-const features = [
-  {
-    idx: 1,
-    title: "Effortless Event Creation",
-    description:
-      "Organize workshops, hackathons, and community meetups in seconds.",
-    bg: "bg-gradient-to-r from-indigo-100 to-cyan-100",
-    numGradient: "bg-gradient-to-r from-indigo-500 to-cyan-500",
-  },
-  {
-    idx: 2,
-    title: "Real-time Collaboration",
-    description:
-      "Create groups, share events, and build meaningful connections that last.",
-    bg: "bg-gradient-to-r from-purple-100 to-pink-100",
-    numGradient: "bg-gradient-to-r from-purple-500 to-pink-500",
-  },
-  {
-    idx: 3,
-    title: "Seamless Notifications",
-    description: "Keep your community updated with instant notifications.",
-    bg: "bg-gradient-to-r from-green-100 to-teal-100",
-    numGradient: "bg-gradient-to-r from-green-500 to-teal-500",
-  },
-];
+
+
+// const features = [
+//   {
+//     idx: 1,
+//     title: "Effortless Event Creation",
+//     description:
+//       "Organize workshops, hackathons, and community meetups in seconds.",
+//     bg: "bg-gradient-to-r from-indigo-100 to-cyan-100",
+//     numGradient: "bg-gradient-to-r from-indigo-500 to-cyan-500",
+//   },
+//   {
+//     idx: 2,
+//     title: "Real-time Collaboration",
+//     description:
+//       "Create groups, share events, and build meaningful connections that last.",
+//     bg: "bg-gradient-to-r from-purple-100 to-pink-100",
+//     numGradient: "bg-gradient-to-r from-purple-500 to-pink-500",
+//   },
+//   {
+//     idx: 3,
+//     title: "Seamless Notifications",
+//     description: "Keep your community updated with instant notifications.",
+//     bg: "bg-gradient-to-r from-green-100 to-teal-100",
+//     numGradient: "bg-gradient-to-r from-green-500 to-teal-500",
+//   },
+// ];
 
 export const metadata: Metadata = {
   title: "App Page | To-Gather",
@@ -45,9 +48,11 @@ export const metadata: Metadata = {
     description:
       "Your home page where you can view communities that you are a part of.",
     url: "https://tgcommunity.vercel.app",
-    images: [{
-      url: "https://tgcommunity.vercel.app/opengraph-image.png"
-    }]
+    images: [
+      {
+        url: "https://tgcommunity.vercel.app/opengraph-image.png",
+      },
+    ],
   },
 };
 export default async function Home() {
@@ -61,22 +66,13 @@ export default async function Home() {
   // }
   // console.log(session?.user);
   return (
-    <div className="min-h-screen ">
+    <div className="flex min-h-screen items-center justify-center">
       <Navbar route={ROUTES.ROOT} />
-      <main className="container mx-auto mt-20  px-10 py-16 text-center">
-        <h2 className="primary-text-gradient font-robotoslab text-6xl font-extrabold leading-tight max-sm:text-3xl">
-          Build. Manage. Grow Your Community.
-        </h2>
-        <p className="mt-6 text-lg text-gray-600 max-sm:text-sm">
-          Empower your community with cutting-edge tools to grow, manage, and
-          succeed.
-        </p>
-        <Link href="/sign-up" className="btn-primary mt-8 inline-block">
-          Get Started for Free
-        </Link>
+      <main className="container mx-auto mt-20 min-h-[70vh] px-10 py-16 text-center max-sm:px-5 max-sm:py-8">
+        <Hero />
       </main>
 
-      <section className="container mx-auto px-10 py-16 text-center">
+      {/* <section className="container mx-auto px-10 py-16 text-center">
         <h2 className="inline-block w-auto bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text font-robotoslab text-6xl font-extrabold leading-tight text-transparent max-sm:text-3xl">
           Why Choose Us?
         </h2>
@@ -108,7 +104,7 @@ export default async function Home() {
       <footer className="py-6 text-center text-gray-500">
         &copy; {new Date().getFullYear()} Community Connect. All rights
         reserved.
-      </footer>
+      </footer> */}
     </div>
   );
 }
