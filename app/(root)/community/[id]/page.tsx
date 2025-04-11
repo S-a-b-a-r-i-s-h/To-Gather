@@ -19,7 +19,7 @@ import MemberJoin from "@/components/MemberJoin";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constants/routes";
-import { getCommunity } from "@/lib/actions/community.action";
+import { getCommunities, getCommunity } from "@/lib/actions/community.action";
 
 type User = {
   name: string;
@@ -49,6 +49,17 @@ export async function generateMetadata({ params }: RouteParams) {
   };
 }
 
+export async function generateStaticParams() {
+  const { data } = await getCommunities({});
+  const communities = data?.communities;
+
+  if (!communities) return [{id: "1"}, {id: "2"}, {id: "3"}];
+
+  return communities.map((community) => ({
+    id: community._id.toString(),
+  }))
+}
+
 const CommunityDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
   if (!id) return notFound();
@@ -56,7 +67,7 @@ const CommunityDetails = async ({ params }: RouteParams) => {
   const session = await auth();
   if (!session) return redirect("/home");
 
-  console.log("Inside CommunityIdddddddddddddddddd "+ typeof(id))
+  console.log("Inside CommunityIdddddddddddddddddd "+ id)
 
   const { data: community, success } = await getCommunity({ communityId: id });
   if (!success) return notFound();

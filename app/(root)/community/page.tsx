@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import CommunityCard from "@/components/cards/CommunityCard";
-// import HomeFilter from "@/components/filters/HomeFilter";
 import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
 import { getCommunities } from "@/lib/actions/community.action";
@@ -25,29 +24,11 @@ export const metadata: Metadata = {
     }
 };
 
-// export async function generateStaticParams() {
-//   try {
-//     const { success, data } = await getCommunities({
-//       page: 1,
-//       pageSize: 10,
-//       query: "",
-//       filter: "",
-//     });
-
-//     if (!success || !data?.communities) return [];
-
-//     return data.communities.map((community) => ({
-//       params: { id: community._id },
-//     }));
-//   } catch (error) {
-//     console.error("Error fetching communities:", error);
-//     return [];
-//   }
-// }
-
 const Community = async ({ searchParams }: SearchParams) => {
   const result = await auth();
-  //   const { user }  = result || {};
+  if (!result?.user) {
+    return redirect("/");
+  }
 
   const { page, pageSize, query, filter } = await searchParams;
 
@@ -58,28 +39,12 @@ const Community = async ({ searchParams }: SearchParams) => {
     filter: filter || "",
   });
 
-  //   const { success, data, error } = await getCommunitiesByUser({
-  //     page: Number(page) || 1,
-  //     pageSize: Number(pageSize) || 10,
-  //     query: query || "",
-  //     filter: filter || "",
-  //     id: user?.id
-  //   })
-
   const { communities, isNext } = data || {};
-  //   console.log(communities);
 
-  return result?.user ? (
+  return(
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Communities</h1>
-
-        {/* <Button
-          className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900"
-          asChild
-        >
-          <Link href={ROUTES.CREATE_COMMUNITY}>Create a Community</Link>
-        </Button> */}
       </section>
       <section className="mt-11">
         <LocalSearch
@@ -89,7 +54,6 @@ const Community = async ({ searchParams }: SearchParams) => {
           otherClasses="flex-1"
         />
       </section>
-      {/* <HomeFilter /> */}
       {success ? (
         <div>
           {communities && communities.length > 0 ? (
@@ -99,7 +63,6 @@ const Community = async ({ searchParams }: SearchParams) => {
                   key={community._id}
                   id={community._id}
                   title={community.title}
-                  // description={community.description}
                   members={community.members.length}
                   secondaryAdmins={community.secondaryAdmins.length}
                   price={community.price}
@@ -134,9 +97,7 @@ const Community = async ({ searchParams }: SearchParams) => {
       )}
       { communities && communities.length > 0 && <Pagination page={page} isNext={isNext || false} /> }
     </>
-  ) : (
-    redirect("/")
-  );
+  )
 };
 
 export default Community;

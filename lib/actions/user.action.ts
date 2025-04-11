@@ -1,13 +1,71 @@
 "use server";
 
 // import { Gift } from "lucide-react";
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
 import { User } from "@/database";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
-import { EditUserSchemaById, GetUserSchema } from "../validations";
+import { EditUserSchemaById, GetUserSchema, PaginatedSearchParamsSchema } from "../validations";
+
+export async function getUsers(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ users: User[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  // const limit = Number(pageSize);
+
+  const filterQuery: FilterQuery<typeof User> = {};
+
+  if (query) {
+    filterQuery.$or = [
+      { title: { $regex: new RegExp(query, "i") } },
+      // { description: { $regex: new RegExp(query, "i") } },
+    ];
+  }
+
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "free":
+      filterQuery.price = "0";
+      sortCriteria = { createdAt: -1 };
+      break;
+    case "paid":
+      filterQuery.price = { $ne: "0" };
+      sortCriteria = { createdAt: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+
+  try {
+    const totalUsers = await User.countDocuments(filterQuery);
+
+    const users = await User.find(filterQuery)
+    .sort(sortCriteria)
+
+    const isNext = totalUsers > skip + users.length;
+
+    return {
+      success: true,
+      data: { users: JSON.parse(JSON.stringify(users)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
 
 export async function getUserById(
   params: GetUserParams

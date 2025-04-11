@@ -11,7 +11,7 @@ import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import { getAllCommunitiesByUser } from "@/lib/actions/community.action";
-import { getUserById } from "@/lib/actions/user.action";
+import { getUserById, getUsers } from "@/lib/actions/user.action";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -37,6 +37,17 @@ export async function generateMetadata(
       url: `https://tgcommunity.vercel.app/profile/${userId}`,
     },
   };
+}
+
+export async function generateStaticParams() {
+    const { data } = await getUsers({});
+    const { users } = data || {};
+
+    if (!users) return [{id: "1"}, {id: "2"}, {id: "3"}];
+    console.log(users.length, "users.length");
+    return users.map((user) => ({
+        id: user._id.toString(),
+    }))
 }
 
 const UserDetails = async ({ params, searchParams }: Props) => {
@@ -68,6 +79,8 @@ const UserDetails = async ({ params, searchParams }: Props) => {
 
   const communities = data?.communities || [];
   const isNext = data?.isNext;
+
+  console.log("inside profile details page")
 
   return (
     <div>
