@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
@@ -24,27 +24,27 @@ const robotoslab = localFont({
   weight: "100 200 300 400 500 600 700 800 900",
 });
 
-export const metadata: Metadata = {
-  title: "Layout Page | To-Gather",
-  description: "A platform to create and manage communities, events, profiles.",
-  metadataBase: new URL("https://tgcommunity.vercel.app"),
-  openGraph: {
-    siteName: "To-Gather",
-    type: "website",
-    title: " Layout Page | To-Gather",
-    description:
-      "Your home page where you can view communities that you are a part of.",
-    url: "https://tgcommunity.vercel.app",
-    images: [
-      {
-        url: "https://tgcommunity.vercel.app/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "To-Gather",
-      },
-    ],
-  },
-};
+// export const metadata: Metadata = {
+//   title: "Layout Page | To-Gather",
+//   description: "A platform to create and manage communities, events, profiles.",
+//   metadataBase: new URL("https://tgcommunity.vercel.app"),
+//   openGraph: {
+//     siteName: "To-Gather",
+//     type: "website",
+//     title: " Layout Page | To-Gather",
+//     description:
+//       "Your home page where you can view communities that you are a part of.",
+//     url: "https://tgcommunity.vercel.app",
+//     images: [
+//       {
+//         url: "https://tgcommunity.vercel.app/opengraph-image.png",
+//         width: 1200,
+//         height: 630,
+//         alt: "To-Gather",
+//       },
+//     ],
+//   },
+// };
 
 export default async function RootLayout({
   children,
