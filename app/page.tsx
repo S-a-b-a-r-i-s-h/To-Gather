@@ -10,8 +10,6 @@ import Hero from "@/components/front-page/Hero";
 import Navbar from "@/components/navigation/navbar";
 import ROUTES from "@/constants/routes";
 
-
-
 // const features = [
 //   {
 //     idx: 1,
@@ -68,7 +66,7 @@ export default async function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Navbar route={ROUTES.ROOT} />
-      <main className="container mx-auto mt-20 min-h-[70vh] px-10 py-16 text-center max-sm:px-5 max-sm:py-8">
+      <main className="mx-auto max-w-[70%] px-10 py-24 text-center max-lg:max-w-full max-sm:mx-0 max-sm:px-5">
         <Hero />
       </main>
 
