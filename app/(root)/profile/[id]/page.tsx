@@ -37,7 +37,6 @@ export async function generateMetadata(
       "twitter:title": `Profile | ${user?.name}`,
       "twitter:description": user?.bio,
       "twitter:image": user?.image,
-    
     }
   };
 }
