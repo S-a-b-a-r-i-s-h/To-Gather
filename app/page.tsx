@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 // import Features from "@/components/Features";
+// import Feature from "@/components/front-page/Feature";
 import Hero from "@/components/front-page/Hero";
 import Navbar from "@/components/navigation/navbar";
 import ROUTES from "@/constants/routes";
@@ -39,6 +40,7 @@ import ROUTES from "@/constants/routes";
 export const metadata: Metadata = {
   title: "App Page | To-Gather",
   description: "A platform to create and manage communities, events, profiles.",
+  metadataBase: new URL("https://tgcommunity.vercel.app"),  
   openGraph: {
     siteName: "To-Gather",
     type: "website",
@@ -49,6 +51,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://tgcommunity.vercel.app/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "To-Gather",
       },
     ],
   },
@@ -66,8 +71,9 @@ export default async function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Navbar route={ROUTES.ROOT} />
-      <main className="mx-auto max-w-[70%] px-10 py-24 text-center max-lg:max-w-full max-sm:mx-0 max-sm:px-5">
+      <main className="mx-auto max-w-[70%] px-10 py-40 text-center max-lg:max-w-full max-md:py-24 max-sm:mx-0 max-sm:px-5">
         <Hero />
+        {/* <Feature /> */}
       </main>
 
       {/* <section className="container mx-auto px-10 py-16 text-center">

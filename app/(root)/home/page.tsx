@@ -22,12 +22,21 @@ export const metadata: Metadata = {
   title: "To-Gather | Home",
   description:
     "Your home page where you can view communities that you are a part of.",
+    metadataBase: new URL("https://tgcommunity.vercel.app"),
   openGraph: {
     type: "website",
     title: "To-Gather | Home",
     description:
       "Your home page where you can view communities that you are a part of.",
     url: "https://tgcommunity.vercel.app/home",
+    images: [
+      {
+        url: "https://tgcommunity.vercel.app/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "To-Gather",
+      },
+    ],
   }
 };
 

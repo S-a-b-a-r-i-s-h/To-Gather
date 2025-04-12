@@ -218,16 +218,18 @@ const Hero = () => {
         <Image
           src={`/images/hero-image-light.png`}
           alt="Hero Image"
-          width={500}
-          height={700}
+          width={1600}
+          height={2100}
           className=" w-screen rounded-lg dark:hidden"
+          priority
         />
         <Image
           src={`/images/hero-image-dark.png`}
           alt="Hero Image"
-          width={500}
-          height={700}
+          width={1600}
+          height={2100}
           className="hidden w-screen rounded-lg dark:block"
+          priority
         />
       </div>
     </div>
