@@ -193,7 +193,7 @@ const Hero = () => {
     <div>
       <header
         id="heading"
-        className=" flex flex-col items-center gap-2 font-robotoslab text-6xl font-medium leading-tight text-gray-800 dark:text-gray-200 max-md:text-5xl max-sm:text-5xl max-[530px]:text-[2.5rem] max-[530px]:leading-none max-[450px]:text-[2.25rem]"
+        className="max-[530px]:leading-1 flex flex-col items-center gap-2 whitespace-nowrap font-robotoslab text-6xl font-medium leading-tight text-gray-800 dark:text-gray-200 max-md:text-5xl max-sm:text-5xl max-[530px]:text-[2.7rem] max-[450px]:text-[2.25rem] max-[360px]:text-[1.6rem]"
       >
         <h2 className="opacity-0">Create & Manage</h2>
         <h2 className="myText primary-text-gradient w-fit opacity-0">
