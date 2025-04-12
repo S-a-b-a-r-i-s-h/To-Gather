@@ -139,7 +139,7 @@ const Hero = () => {
     );
     tl.fromTo(
       ".hero__image",
-      { y: 100 },
+      { y: 30 },
       { y: 0, opacity: 1, duration: 0.8 },
       "+=0.3"
     );
@@ -162,8 +162,8 @@ const Hero = () => {
         duration: 0.4,
         ease: "power1.in",
         onComplete: () => {
-          wordIndex = (wordIndex + 1) % words.length;
-          myText.textContent = words[wordIndex];
+          wordIndex = wordIndex % words.length;
+          myText.textContent = words[wordIndex++];
           gsap.fromTo(
             myText,
             { y: 20, opacity: 0 },
@@ -193,7 +193,7 @@ const Hero = () => {
     <div>
       <header
         id="heading"
-        className=" flex flex-col items-center gap-2 font-robotoslab text-6xl font-medium leading-tight text-gray-800 dark:text-gray-200 max-md:text-5xl max-sm:text-5xl"
+        className=" flex flex-col items-center gap-2 font-robotoslab text-6xl font-medium leading-tight text-gray-800 dark:text-gray-200 max-md:text-5xl max-sm:text-5xl max-[530px]:text-[2.5rem] max-[530px]:leading-none max-[450px]:text-[2.25rem]"
       >
         <h2 className="opacity-0">Create & Manage</h2>
         <h2 className="myText primary-text-gradient w-fit opacity-0">
@@ -208,7 +208,7 @@ const Hero = () => {
       <Link
         id="hero-button"
         href="/sign-up"
-        className="relative mt-8 inline-block overflow-hidden rounded-[7px] border-none bg-gray-800 px-6 py-3 text-sm font-semibold text-gray-200 opacity-0 transition-all duration-500 hover:bg-gray-300 hover:text-gray-800 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-gray-800  dark:hover:text-gray-200 max-sm:px-4 max-sm:py-3 max-sm:text-xs"
+        className="relative mt-8 inline-block overflow-hidden rounded-md border-none bg-gray-800 px-6 py-3 text-sm font-semibold text-gray-200 opacity-0 transition-all duration-500 hover:bg-indigo-100 hover:text-gray-800 hover:ring-gray-800 dark:bg-blue-200/10 dark:text-blue-200 dark:hover:bg-blue-200 dark:hover:text-gray-800 max-sm:px-4 max-sm:py-3 max-sm:text-xs"
       >
         <span>Get Started for Free</span>
       </Link>
@@ -220,14 +220,14 @@ const Hero = () => {
           alt="Hero Image"
           width={500}
           height={700}
-          className=" w-screen dark:hidden"
+          className=" w-screen rounded-lg dark:hidden"
         />
         <Image
           src={`/images/hero-image-dark.png`}
           alt="Hero Image"
           width={500}
           height={700}
-          className="hidden w-screen dark:block"
+          className="hidden w-screen rounded-lg dark:block"
         />
       </div>
     </div>
