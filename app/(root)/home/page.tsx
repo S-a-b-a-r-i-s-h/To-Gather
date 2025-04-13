@@ -19,13 +19,13 @@ const CommunityCard = dynamic(() => import("@/components/cards/CommunityCard"));
 const LocalSearch = dynamic(() => import("@/components/search/LocalSearch"));
 
 export const metadata: Metadata = {
-  title: "To-Gather | Home",
+  title: "Home | To-Gather",
   description:
     "Your home page where you can view communities that you are a part of.",
     metadataBase: new URL("https://tgcommunity.vercel.app"),
   openGraph: {
     type: "website",
-    title: "To-Gather | Home",
+    title: "Home | To-Gather",
     description:
       "Your home page where you can view communities that you are a part of.",
     url: "https://tgcommunity.vercel.app/home",
@@ -86,9 +86,9 @@ const Home = async ({ searchParams }: SearchParams) => {
         // <Suspense>
           <div>
             {communities.length > 0 && (
-              <h1 className="primary-text-gradient h2-bold mt-10 inline-block">
+              <h2 className="primary-text-gradient h2-bold mt-10 inline-block">
                 Admin
-              </h1>
+              </h2>
             )}
             <div>
               {communities.length > 0 ? (

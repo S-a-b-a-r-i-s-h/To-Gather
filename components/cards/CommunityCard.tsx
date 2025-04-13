@@ -33,15 +33,17 @@ const CommunityCard: React.FC<CommunityCardProps> = React.memo(function Communit
           src={image} 
           alt="Community Image" 
           fill
+          sizes="100%"
+          priority
           className="rounded-md object-cover"
         />
       </div>
 
       {/* Content Section */}
       <div className="flex-1 p-4">
-        <h6 className="mb-2 truncate text-lg font-semibold text-black dark:text-white sm:text-xl">
+        <h3 className="mb-2 truncate text-lg font-semibold text-black dark:text-white sm:text-xl">
           {title}
-        </h6>
+        </h3>
         <p className="text-sm font-light leading-normal text-slate-600 dark:text-slate-400 sm:text-base">
           {shortDescription}
         </p>

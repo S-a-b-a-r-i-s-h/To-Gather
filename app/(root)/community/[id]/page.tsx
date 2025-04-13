@@ -43,9 +43,15 @@ export async function generateMetadata({ params }: RouteParams) {
   const populatedCommunity = community as PopulatedCommunity;
 
   return {
-    title: populatedCommunity.title,
+    title: populatedCommunity.title + " | Community",
     description: populatedCommunity.shortDescription,
     image: populatedCommunity.img,
+    other: {
+      "og:title": populatedCommunity.title,
+      "og:description": populatedCommunity.shortDescription,
+      "og:image": populatedCommunity.img,
+      "og:url": `https://tgcommunity.vercel.app/community/${populatedCommunity._id}`,
+    }
   };
 }
 

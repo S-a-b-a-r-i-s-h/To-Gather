@@ -76,6 +76,7 @@ const ChatBot = () => {
               onClick={toggleChat}
               size="icon"
               className="size-14 rounded-full p-2 shadow-lg"
+              aria-label="Chatbot"
             >
               {!isChatOpen ? (
                 <MessageCircle className="size-12" />

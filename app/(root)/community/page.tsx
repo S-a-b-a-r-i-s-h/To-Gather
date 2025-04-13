@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 import { auth } from "@/auth";
 import CommunityCard from "@/components/cards/CommunityCard";
+import ComponentsLoading from "@/components/loading/ComponentsLoading";
 import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
 import { getCommunities } from "@/lib/actions/community.action";
@@ -15,13 +17,13 @@ export const metadata: Metadata = {
   title: "To-Gather | Communities",
   description:
     "Search for communities that you are interested in and join them to start engaging with like-minded people.",
-    openGraph: {
-      type: "website",
-      title: "To-Gather | Communities",
-      description:
-        "Search for communities that you are interested in and join them to start engaging with like-minded people.",
-      url: "https://tgcommunity.vercel.app/community",
-    }
+  openGraph: {
+    type: "website",
+    title: "To-Gather | Communities",
+    description:
+      "Search for communities that you are interested in and join them to start engaging with like-minded people.",
+    url: "https://tgcommunity.vercel.app/community",
+  },
 };
 
 const Community = async ({ searchParams }: SearchParams) => {
@@ -41,7 +43,7 @@ const Community = async ({ searchParams }: SearchParams) => {
 
   const { communities, isNext } = data || {};
 
-  return(
+  return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Communities</h1>
@@ -54,50 +56,54 @@ const Community = async ({ searchParams }: SearchParams) => {
           otherClasses="flex-1"
         />
       </section>
-      {success ? (
-        <div>
-          {communities && communities.length > 0 ? (
-            <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {communities.map((community) => (
-                <CommunityCard
-                  key={community._id}
-                  id={community._id}
-                  title={community.title}
-                  members={community.members.length}
-                  secondaryAdmins={community.secondaryAdmins.length}
-                  price={community.price}
-                  image={community.img}
-                  shortDescription={community.shortDescription}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="mt-10 flex w-full flex-col items-center justify-center">
-              <p className="text-dark400_light700">
-                No Communities matching <b>&quot;{query}&quot;</b>{" "}
-              </p>
-              <div>
-                <Link
-                  className="primary-text-gradient"
-                  href={`/create-community`}
-                >
-                  Click Here
-                </Link>
-                &nbsp; to create a community
+      <Suspense fallback={<ComponentsLoading />}>
+        {success ? (
+          <div>
+            {communities && communities.length > 0 ? (
+              <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {communities.map((community) => (
+                  <CommunityCard
+                    key={community._id}
+                    id={community._id}
+                    title={community.title}
+                    members={community.members.length}
+                    secondaryAdmins={community.secondaryAdmins.length}
+                    price={community.price}
+                    image={community.img}
+                    shortDescription={community.shortDescription}
+                  />
+                ))}
               </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="mt-10 flex w-full items-center justify-center">
-          <p className="text-dark400_light700">
-            {error?.message || "Failed to fetch communities"}
-          </p>
-        </div>
+            ) : (
+              <div className="mt-10 flex w-full flex-col items-center justify-center">
+                <p className="text-dark400_light700">
+                  No Communities matching <b>&quot;{query}&quot;</b>{" "}
+                </p>
+                <div>
+                  <Link
+                    className="primary-text-gradient"
+                    href={`/create-community`}
+                  >
+                    Click Here
+                  </Link>
+                  &nbsp; to create a community
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="mt-10 flex w-full items-center justify-center">
+            <p className="text-dark400_light700">
+              {error?.message || "Failed to fetch communities"}
+            </p>
+          </div>
+        )}
+      </Suspense>
+      {communities && communities.length > 0 && (
+        <Pagination page={page} isNext={isNext || false} />
       )}
-      { communities && communities.length > 0 && <Pagination page={page} isNext={isNext || false} /> }
     </>
-  )
+  );
 };
 
 export default Community;

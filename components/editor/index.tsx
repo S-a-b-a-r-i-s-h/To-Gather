@@ -49,7 +49,7 @@ const Editor = ({ id, value, editorRef, fieldChange, ...props }: Props) => {
 
   return (
     <div id={id}>
-      <MDXEditor
+      <MDXEditor   
         key={resolvedTheme}
         markdown={value}
         ref={editorRef}

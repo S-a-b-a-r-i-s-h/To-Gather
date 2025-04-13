@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import dynamic from "next/dynamic";
-import Image from "next/image";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -12,8 +12,10 @@ import { z } from "zod";
 
 import { toast } from "@/hooks/use-toast";
 import { createCommunity, editCommunity } from "@/lib/actions/community.action";
+import { useUploadThing } from "@/lib/uploadthing";
 import { CreateCommunitySchema } from "@/lib/validations";
 
+import { FileUploader } from "../FileUploader";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -33,9 +35,12 @@ interface Params {
   isEdit?: boolean;
 }
 const CommunityForm = ({ community, isEdit = false }: Params) => {
+  const [files, setFiles] = useState<File[]>([]);
+
+  const { startUpload } = useUploadThing("imageUploader");
   const router = useRouter();
 
-  const [imagePreview, setImagePreview] = useState<string>("");
+  // const [imagePreview, setImagePreview] = useState<string>("");
   const editorRef = React.useRef<MDXEditorMethods>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -59,8 +64,20 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
   const handleCreateCommunity = async (
     data: z.infer<typeof CreateCommunitySchema>
   ) => {
+    let uploadedImageUrl = data.image;
+
+    if (files.length > 0) {
+      const uploadedImages = await startUpload(files);
+
+      if (!uploadedImages) {
+        return;
+      }
+
+      uploadedImageUrl = uploadedImages[0].url;
+      data.image = uploadedImageUrl;
+    }
     startTransition(async () => {
-      data.image = imagePreview || community?.img || "";
+      // data.image = imagePreview || community?.img || "";
       // data.price = ""
       console.log(data);
 
@@ -111,7 +128,7 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
         className="flex w-full flex-col gap-10"
         onSubmit={form.handleSubmit(handleCreateCommunity)}
       >
-        <FormField
+        {/* <FormField
           control={form.control}
           name="image"
           render={() => (
@@ -122,14 +139,6 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
               >
                 {
                   <div className="flex-center flex-col py-5">
-                    {/* <Image
-                      src="/assets/icons/upload.svg"
-                      width={77}
-                      height={77}
-                      alt="file upload"
-                    /> */}
-                    {/* <h3 className="my-2">Drag photo here</h3> */}
-                    {/* <p className="mb-4">SVG, PNG, JPG</p> */}
                     {imagePreview || community?.img ? (
                       <Image
                         src={imagePreview || community?.img || ""}
@@ -168,6 +177,31 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 Upload an image for your community
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel
+                className="paragraph-semibold text-dark400_light800"
+                htmlFor="image"
+              >
+                Community Image <span className="primary-text-gradient">*</span>
+              </FormLabel>
+              <FormControl>
+                <FileUploader
+                  onFieldChange={field.onChange}
+                  imageUrl={field.value}
+                  setFiles={setFiles}
+                />
+              </FormControl>
+              <FormDescription className="body-regular mt-2.5 text-light-500">
+                Upload an image for the Community.
               </FormDescription>
               <FormMessage />
             </FormItem>

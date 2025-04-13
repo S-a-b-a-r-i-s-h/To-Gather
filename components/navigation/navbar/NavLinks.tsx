@@ -38,7 +38,7 @@ const NavLinks = ({ isMobileNav = false, userId }: { isMobileNav?: boolean; user
           >
             <Image
               src={item.imgURL}
-              alt={item.label}
+              alt={item.label + " page"}
               width={20}
               height={20}
               className={cn({ "invert-colors": !isActive })}
