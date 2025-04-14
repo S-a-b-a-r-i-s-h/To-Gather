@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     siteName: "To-Gather",
     type: "website",
-    title: " (Root) Page | To-Gather",
+    title: "(Root) Page | To-Gather",
     description:
       "Your home page where you can view communities that you are a part of.",
     url: "https://tgcommunity.vercel.app",

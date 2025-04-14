@@ -30,13 +30,19 @@ export async function generateMetadata(
   return {
     title: `${user?.name} | Profile`,
     description: user?.bio,
-    other: {
-      "og:title": `Profile | ${user?.name}`,
-      "og:description": user?.bio,
-      "og:image": user?.image,
-      "twitter:title": `Profile | ${user?.name}`,
-      "twitter:description": user?.bio,
-      "twitter:image": user?.image,
+    openGraph: {
+      type: "website",
+      title: `Profile | ${user?.name}`,
+      description: user?.bio,
+      url: `https://tgcommunity.vercel.app/profile/${userId}`,
+      images: [
+        {
+          url: user?.image,
+          width: 1200,
+          height: 630,
+          alt: `${user?.name} Profile`,
+        },
+      ],
     }
   };
 }
