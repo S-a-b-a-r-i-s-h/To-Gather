@@ -11,6 +11,8 @@ import { Button } from "../ui/button";
 const filters = [
   { name: "Individual", value: "individual" },
   { name: "Group", value: "group" },
+  {name: "Past", value: "past"},
+  {name: "Upcoming", value: "upcoming"},
 ];
 
 const EventFilter = () => {
@@ -43,7 +45,7 @@ const EventFilter = () => {
   };
 
   return (
-    <div className="mt-10 flex flex-wrap gap-3">
+    <div className="mt-10 flex flex-wrap gap-3 max-md:justify-center">
       {filters.map((filter) => (
         <div key={filter.value} className="relative">
           <div

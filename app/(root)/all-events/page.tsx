@@ -75,9 +75,13 @@ const page = async ({ searchParams }: SearchParams) => {
             </div>
           ) : (
             <div className="mt-10 flex w-full flex-col items-center justify-center">
-              <p className="text-dark400_light700">
-                No Events matching <b>&quot;{query}&quot;</b>{" "}
-              </p>
+              {query ? (
+                <p className="text-dark400_light700">
+                  No Events matching <b>&quot;{query}&quot;</b>
+                </p>
+              ) : (
+                <p className="text-dark400_light700">No Events found</p>
+              )}
             </div>
           )}
         </div>
@@ -88,7 +92,9 @@ const page = async ({ searchParams }: SearchParams) => {
           </p>
         </div>
       )}
-      { events && events.length > 0 && <Pagination page={page} isNext={isNext || false} /> }
+      {events && events.length > 0 && (
+        <Pagination page={page} isNext={isNext || false} />
+      )}
     </>
   );
 };

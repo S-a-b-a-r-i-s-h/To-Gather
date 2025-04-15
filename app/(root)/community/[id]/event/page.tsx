@@ -80,8 +80,15 @@ const page = async ({ params, searchParams }: EventPageProps) => {
             ) : (
               <div className="mt-10 flex w-full flex-col items-center justify-center">
                 <p className="text-dark400_light700">
-                  No Events matching <b>&quot;{query}&quot;</b>{" "}
+                  No <b className="capitalize">{filter}</b> Events
+                  {query && (
+                    <>
+                      {" "}
+                      matching <b>&quot;{query}&quot;</b>
+                    </>
+                  )}
                 </p>
+
                 <div>
                   <Link
                     className="primary-text-gradient"

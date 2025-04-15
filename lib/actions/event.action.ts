@@ -251,6 +251,14 @@ export async function getEventsByCommunityId(
       filterQuery.type = "group";
       sortCriteria = { createdAt: -1 };
       break;
+    case "past":
+      filterQuery.date = { $lt: new Date() };
+      sortCriteria = { date: -1 };
+      break;
+    case "upcoming":
+      filterQuery.date = { $gte: new Date() };
+      sortCriteria = { date: 1 };
+      break;
     default:
       sortCriteria = { createdAt: -1 };
       break;

@@ -77,11 +77,15 @@ const page = async ({ searchParams }: SearchParams) => {
             </div>
           ) : (
             <div className="mt-10 flex w-full flex-col items-center justify-center">
-              <p className="text-dark400_light700">
-                No Events matching <b>&quot;{query}&quot;</b>{" "}
-              </p>
+              {query ? (
+                <p className="text-dark400_light700">
+                  No Events matching <b>&quot;{query}&quot;</b>
+                </p>
+              ) : (
+                <p className="text-dark400_light700">No Events found</p>
+              )}
               <div>
-                <Link className="primary-text-gradient" href={`all-events`}>
+                <Link className="primary-text-gradient" href={`/all-events`}>
                   Click Here
                 </Link>
                 &nbsp; to discover more events

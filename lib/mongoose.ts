@@ -37,12 +37,12 @@ const dbConnect = async (): Promise<Mongoose> => {
         dbName: "to-gather",
       })
       .then((result) => {
-        console.log("Connected to MongoDB");
+        // console.log("Connected to MongoDB");
         logger.info("Connected to MongoDB");
         return result;
       })
       .catch((error) => {
-        console.log("Error connecting to MongoDB", error);
+        // console.log("Error connecting to MongoDB", error);
         logger.error("Error connecting to MongoDB", error);
         throw error;
       });

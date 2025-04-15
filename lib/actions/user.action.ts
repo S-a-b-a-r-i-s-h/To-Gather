@@ -76,7 +76,7 @@ export async function getUserById(
     schema: GetUserSchema,
     authorize: true,
   });
-
+  console.log("Inside getUserById")
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }

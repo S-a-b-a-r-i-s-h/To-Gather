@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+// import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { auth } from "@/auth";
-import CommunityCard from "@/components/cards/CommunityCard";
+// import CommunityCard from "@/components/cards/CommunityCard";
 import ComponentsLoading from "@/components/loading/ComponentsLoading";
-import Pagination from "@/components/Pagination";
+// import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
+import Communities from "@/components/show/Communities";
 import { getCommunities } from "@/lib/actions/community.action";
+// import { getCommunities } from "@/lib/actions/community.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -34,14 +36,14 @@ const Community = async ({ searchParams }: SearchParams) => {
 
   const { page, pageSize, query, filter } = await searchParams;
 
-  const { success, data, error } = await getCommunities({
-    page: Number(page) || 1,
-    pageSize: Number(pageSize) || 2,
-    query: query || "",
-    filter: filter || "",
-  });
+  // const { success, data, error } = await getCommunities({
+  //   page: Number(page) || 1,
+  //   pageSize: Number(pageSize) || 2,
+  //   query: query || "",
+  //   filter: filter || "",
+  // });
 
-  const { communities, isNext } = data || {};
+  // const { communities, isNext } = data || {};
 
   return (
     <>
@@ -56,52 +58,22 @@ const Community = async ({ searchParams }: SearchParams) => {
           otherClasses="flex-1"
         />
       </section>
-      <Suspense fallback={<ComponentsLoading />}>
-        {success ? (
-          <div>
-            {communities && communities.length > 0 ? (
-              <div className="mt-10 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {communities.map((community) => (
-                  <CommunityCard
-                    key={community._id}
-                    id={community._id}
-                    title={community.title}
-                    members={community.members.length}
-                    secondaryAdmins={community.secondaryAdmins.length}
-                    price={community.price}
-                    image={community.img}
-                    shortDescription={community.shortDescription}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="mt-10 flex w-full flex-col items-center justify-center">
-                <p className="text-dark400_light700">
-                  No Communities matching <b>&quot;{query}&quot;</b>{" "}
-                </p>
-                <div>
-                  <Link
-                    className="primary-text-gradient"
-                    href={`/create-community`}
-                  >
-                    Click Here
-                  </Link>
-                  &nbsp; to create a community
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="mt-10 flex w-full items-center justify-center">
-            <p className="text-dark400_light700">
-              {error?.message || "Failed to fetch communities"}
-            </p>
-          </div>
-        )}
+      <Suspense fallback={<ComponentsLoading />}>   
+        <Communities 
+          fetchFunction = {getCommunities}
+          fetchParams = {{
+            page: Number(page) || 1,
+            pageSize: Number(pageSize) || 1,
+            query: query || "",
+            filter: filter || "",
+          }}
+          // page={Number(page) || 1}
+          // pageSize={Number(pageSize) || 2}
+          // query={query || ""}
+          // filter={filter || ""}
+        />
       </Suspense>
-      {communities && communities.length > 0 && (
-        <Pagination page={page} isNext={isNext || false} />
-      )}
+      
     </>
   );
 };

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import React from "react";
+import React, { cache } from "react";
 import { BsTwitterX } from "react-icons/bs";
 import {
   FaSquareWhatsapp,
@@ -33,11 +33,13 @@ type PopulatedCommunity = Community & {
   members: User[];
 };
 
+const getCommunityCached = cache((id: string) => getCommunity({ communityId: id }));
 export async function generateMetadata({ params }: RouteParams) {
   const { id } = await params;
   if (!id) return notFound();
 
-  const { data: community, success } = await getCommunity({ communityId: id });
+  // const { data: community, success } = await getCommunity({ communityId: id });
+  const { data: community, success } = await getCommunityCached(id);
   if (!success) return notFound();
 
   const populatedCommunity = community as PopulatedCommunity;
@@ -71,11 +73,13 @@ const CommunityDetails = async ({ params }: RouteParams) => {
   if (!id) return notFound();
 
   const session = await auth();
-  if (!session) return redirect("/home");
+  if (!session) return redirect("/");
 
-  console.log("Inside CommunityIdddddddddddddddddd "+ id)
+  console.log("Inside CommunityId "+ id)
 
-  const { data: community, success } = await getCommunity({ communityId: id });
+  // const { data: community, success } = await getCommunity({ communityId: id });
+  const { data: community, success } = await getCommunityCached(id);
+
   if (!success) return notFound();
 
   const populatedCommunity = community as PopulatedCommunity;

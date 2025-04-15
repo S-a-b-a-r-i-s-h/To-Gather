@@ -33,8 +33,9 @@ const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 interface Params {
   community?: Community;
   isEdit?: boolean;
+  userId?: string;
 }
-const CommunityForm = ({ community, isEdit = false }: Params) => {
+const CommunityForm = ({ community, isEdit = false, userId }: Params) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const { startUpload } = useUploadThing("imageUploader");
@@ -76,6 +77,15 @@ const CommunityForm = ({ community, isEdit = false }: Params) => {
       uploadedImageUrl = uploadedImages[0].url;
       data.image = uploadedImageUrl;
     }
+    const keys = Object.keys(localStorage);
+    console.log("LocalStorage Keys", keys)
+    console.log("Clearing Local Stroage");
+    // Loop through all keys and remove the ones that match the pattern
+    keys.forEach((key) => {
+      if (key.startsWith(`home::${userId}`)) {
+        localStorage.removeItem(key);
+      }
+    });
     startTransition(async () => {
       // data.image = imagePreview || community?.img || "";
       // data.price = ""

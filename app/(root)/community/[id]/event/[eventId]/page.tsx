@@ -70,6 +70,8 @@ const EventDetails = async ({
   const formattedDate = backendDate
     ? format(new Date(backendDate), "dd MMM yyyy")
     : "Date not available";
+  
+    console.log("Inside EventId "+ eventId)
 
   return (
     <>
@@ -80,6 +82,7 @@ const EventDetails = async ({
             alt={`event image`}
             width={1000}
             height={1000}
+            priority
             className="h-full min-h-[300px] rounded-lg object-cover object-center"
           />
 

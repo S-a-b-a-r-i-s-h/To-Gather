@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import React from "react";
+import React, { cache, Suspense } from "react";
 import { FaSquareGithub } from "react-icons/fa6";
 import { GrLinkedin } from "react-icons/gr";
 
 import { auth } from "@/auth";
-import CommunityCard from "@/components/cards/CommunityCard";
-import Pagination from "@/components/Pagination";
+// import CommunityCard from "@/components/cards/CommunityCard";
+import ComponentsLoading from "@/components/loading/ComponentsLoading";
+// import Pagination from "@/components/Pagination";
+import Communities from "@/components/show/Communities";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import { getAllCommunitiesByUser } from "@/lib/actions/community.action";
@@ -18,13 +20,13 @@ interface Props {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
-export async function generateMetadata(
-  { params }: RouteParams
-) {
+const getUserByIdCached = cache((userId: string) => getUserById({ userId }));
+
+export async function generateMetadata({ params }: RouteParams) {
   const { id: userId } = await params;
   if (!userId) return notFound();
 
-  const { data: user, success } = await getUserById({ userId });
+  const { data: user, success } = await getUserByIdCached(userId);
   if (!success) return notFound();
 
   return {
@@ -43,19 +45,19 @@ export async function generateMetadata(
           alt: `${user?.name} Profile`,
         },
       ],
-    }
+    },
   };
 }
 
 export async function generateStaticParams() {
-    const { data } = await getUsers({});
-    const { users } = data || {};
+  const { data } = await getUsers({});
+  const { users } = data || {};
 
-    if (!users) return [{id: "1"}, {id: "2"}, {id: "3"}];
-    console.log(users.length, "users.length");
-    return users.map((user) => ({
-        id: user._id.toString(),
-    }))
+  if (!users) return [{ id: "1" }, { id: "2" }, { id: "3" }];
+  console.log(users.length, "users.length");
+  return users.map((user) => ({
+    id: user._id.toString(),
+  }));
 }
 
 const UserDetails = async ({ params, searchParams }: Props) => {
@@ -70,25 +72,13 @@ const UserDetails = async ({ params, searchParams }: Props) => {
 
   const { id: userId } = param;
 
-  const { page = "1", pageSize = "2", query = "", filter = "" } = searchParam;
+  const { page = "1", pageSize = "1", query = "", filter = "" } = searchParam;
 
-  const { data: user, success } = await getUserById({ userId });
+  const { data: user, success } = await getUserByIdCached(userId);
   if (!success) return notFound();
 
-  // Fetch communities
-  const { data, error } = await getAllCommunitiesByUser({
-    page: Number(page),
-    pageSize: Number(pageSize),
-    query,
-    filter,
-    id: user?._id,
-  });
-  if (error) return notFound();
-
-  const communities = data?.communities || [];
-  const isNext = data?.isNext;
-
-  console.log("inside profile details page")
+  console.log("inside profile details page");
+  const socialHandles = user?.linkedin || user?.github || user?.portfolio;
 
   return (
     <div>
@@ -117,37 +107,43 @@ const UserDetails = async ({ params, searchParams }: Props) => {
           </Button>
         )}
       </div>
-      {user?.bio && (
-        <div className="mt-11">
-          <h1 className="h2-bold mb-3">About</h1>
-          <p>{user.bio}</p>
+      <div className="mb-5 mt-11">
+        {user?.bio && (
+          <div>
+            <h1 className="h2-bold mb-3">About</h1>
+            <p>{user.bio}</p>
+          </div>
+        )}
+      </div>
+
+      {socialHandles && (
+        <div className="mt-11 border-2">
+          {socialHandles && <h1 className="h2-bold mb-3"> Social handles </h1>}
+          <div className="mb-5 flex gap-5">
+            {user?.linkedin && (
+              <Link target="_" href={user.linkedin}>
+                <GrLinkedin className="text-3xl" />
+              </Link>
+            )}
+            {user?.github && (
+              <Link target="_" href={user.github}>
+                <FaSquareGithub className="text-3xl" />
+              </Link>
+            )}
+          </div>
+          {user?.portfolio && (
+            <Link
+              target="_blank"
+              href={user?.portfolio || ""}
+              className="primary-text-gradient"
+            >
+              Visit my Portfolio
+            </Link>
+          )}
         </div>
       )}
 
-      <div className="mb-5 mt-11">
-        <h1 className="h2-bold mb-3"> Social handles </h1>
-        <div className="mb-5 flex gap-5">
-          {user?.linkedin && (
-            <Link target="_" href={user.linkedin}>
-              <GrLinkedin className="text-3xl" />
-            </Link>
-          )}
-          {user?.github && (
-            <Link target="_" href={user.github}>
-              <FaSquareGithub className="text-3xl" />
-            </Link>
-          )}
-        </div>
-        <Link
-          target="_blank"
-          href={user?.portfolio || ""}
-          className="primary-text-gradient"
-        >
-          Visit my Portfolio
-        </Link>
-      </div>
-
-      <div>
+      {/* <div>
         {communities.length > 0 && (
           <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {communities.map((community) => (
@@ -167,7 +163,19 @@ const UserDetails = async ({ params, searchParams }: Props) => {
       </div>
       {communities && communities.length > 0 && (
         <Pagination page={page} isNext={isNext || false} />
-      )}
+      )} */}
+      <Suspense fallback={<ComponentsLoading />}>
+        <Communities
+          fetchFunction={getAllCommunitiesByUser}
+          fetchParams={{
+            page: Number(page) || 1,
+            pageSize: Number(pageSize) || 1,
+            query: query || "",
+            filter: filter || "",
+            id: user?._id,
+          }}
+        />
+      </Suspense>
     </div>
   );
 };

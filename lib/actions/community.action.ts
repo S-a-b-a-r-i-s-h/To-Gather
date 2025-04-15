@@ -1,6 +1,7 @@
 "use server";
 
 import mongoose, { FilterQuery } from "mongoose";
+// import { cache } from "react";
 
 import { User } from "@/database";
 import Community from "@/database/community.model";
@@ -158,6 +159,42 @@ export async function editCommunity(
   }
 }
 
+// export const getCommunity = cache(async )
+// export const getCommunity = cache(
+//   async (params: GetCommunityParams): Promise<ActionResponse<Community>> => {
+//     const validationResult = await action({
+//       params,
+//       schema: GetCommunitySchema,
+//       authorize: true,
+//     });
+//     console.log("Inside getCommunity action");
+//     if (validationResult instanceof Error) {
+//       return handleError(validationResult) as ErrorResponse;
+//     }
+
+//     const { communityId } = validationResult.params!;
+
+//     try {
+//       // get the community by id and also i want the admin, secondaryAdmins and members. I need ther image and name.
+
+//       const community = await Community.findById(communityId)
+//         .populate("admin", "name image _id")
+//         .populate("secondaryAdmins", "name image _id")
+//         .populate("members", "name image _id");
+
+//       // const community = await Community.findById(communityId);
+
+//       if (!community) {
+//         throw new Error("Community not found");
+//       }
+
+//       return { success: true, data: JSON.parse(JSON.stringify(community)) };
+//     } catch (error) {
+//       return handleError(error) as ErrorResponse;
+//     }
+//   }
+// );
+
 export async function getCommunity(
   params: GetCommunityParams
 ): Promise<ActionResponse<Community>> {
@@ -166,7 +203,7 @@ export async function getCommunity(
     schema: GetCommunitySchema,
     authorize: true,
   });
-
+  // console.log("Inside getCommunity action");
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }
@@ -214,7 +251,6 @@ export async function getCommunities(
   if (query) {
     filterQuery.$or = [
       { title: { $regex: new RegExp(query, "i") } },
-      // { description: { $regex: new RegExp(query, "i") } },
     ];
   }
 
@@ -254,6 +290,68 @@ export async function getCommunities(
   }
 }
 
+// export const getCommunitiesByUser = cache(async (
+//   params: PaginatedSearchParams
+// ): Promise<ActionResponse<{ communities: Community[]; isNext: boolean }>> => {
+//   const validationResult = await action({
+//     params,
+//     schema: PaginatedSearchParamsSchema,
+//   });
+
+//   if (validationResult instanceof Error) {
+//     return handleError(validationResult) as ErrorResponse;
+//   }
+
+//   console.log("inside getCommunitiesByUser action");
+//   const { page = 1, pageSize = 2, query, filter, id } = params;
+//   const skip = (Number(page) - 1) * pageSize;
+//   const limit = Number(pageSize);
+//   console.log("QUERY", query);
+//   const filterQuery: FilterQuery<typeof Community> = { admin: id };
+
+//   if (query) {
+//     filterQuery.$or = [
+//       { title: { $regex: new RegExp(query, "i") } },
+//       // { description: { $regex: new RegExp(query, "i") } },
+//     ];
+//   }
+
+//   let sortCriteria = {};
+
+//   switch (filter) {
+//     case "free":
+//       filterQuery.price = "0";
+//       sortCriteria = { createdAt: -1 };
+//       break;
+//     case "paid":
+//       filterQuery.price = { $ne: "0" };
+//       sortCriteria = { createdAt: -1 };
+//       break;
+//     default:
+//       sortCriteria = { createdAt: -1 };
+//       break;
+//   }
+
+//   try {
+//     const totalCommunities = await Community.countDocuments(filterQuery);
+
+//     const communities = await Community.find(filterQuery)
+//       .lean()
+//       .sort(sortCriteria)
+//       .skip(skip)
+//       .limit(limit);
+
+//     const isNext = totalCommunities > skip + communities.length;
+
+//     return {
+//       success: true,
+//       data: { communities: JSON.parse(JSON.stringify(communities)), isNext },
+//     };
+//   } catch (error) {
+//     return handleError(error) as ErrorResponse;
+//   }
+// });
+
 export async function getCommunitiesByUser(
   params: PaginatedSearchParams
 ): Promise<ActionResponse<{ communities: Community[]; isNext: boolean }>> {
@@ -269,6 +367,7 @@ export async function getCommunitiesByUser(
   const { page = 1, pageSize = 2, query, filter, id } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
+  console.log("QUERY", query);
 
   const filterQuery: FilterQuery<typeof Community> = { admin: id };
 
