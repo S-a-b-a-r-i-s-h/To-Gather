@@ -17,7 +17,9 @@ const NavbarShell = ({ children }: { children: React.ReactNode }) => {
   return (
     <nav
       className={`flex-between fixed top-0 z-50 w-full gap-5 rounded-lg p-3 transition-all duration-500 sm:pr-12 ${bgClass} ${
-        scrollDirection === "down" ? "-translate-y-20" : "translate-y-0"
+        scrollDirection === "down"
+          ? "-translate-y-24"
+          : "translate-y-0"
       }`}
     >
       <div
