@@ -92,11 +92,7 @@ const HomeComponent = ({
 
   return (
     <>
-      {communities.length > 0 && (
-        <h2 className="primary-text-gradient h2-bold mt-10 inline-block">
-          Admin
-        </h2>
-      )}
+      
       <section className="mt-11">
         <LocalSearch
           route="/home"
@@ -105,6 +101,11 @@ const HomeComponent = ({
           otherClasses="flex-1"
         />
       </section>
+      {communities.length > 0 && (
+        <h2 className="primary-text-gradient h2-bold mt-10 inline-block">
+          Admin
+        </h2>
+      )}
       <div>
         {communities.length > 0 ? (
           <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">

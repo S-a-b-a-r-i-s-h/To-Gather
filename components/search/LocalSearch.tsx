@@ -49,34 +49,38 @@ const LocalSearch = ({ route, imgSrc, placeholder, otherClasses }: Props) => {
   }, [searchQuery, router, route, searchParams, pathname]);
 
   return (
-    <div
-      className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
-    >
-      <Image
-        src={imgSrc}
-        width={24}
-        height={24}
-        alt="Search"
-        className="cursor-pointer"
-      />
+    <div className="relative p-[1.2px] dark:p-px">
+      <div className="absolute left-0 top-0 h-[30px] w-1/2 rounded-tl-[10px] bg-gradient-to-br from-indigo-500 via-transparent to-transparent dark:from-cyan-500 dark:via-transparent dark:to-transparent" />
+      <div className="absolute bottom-0 right-0 h-[30px] w-1/2 rounded-br-[10px] bg-gradient-to-tl from-indigo-500 via-transparent to-transparent dark:from-cyan-500 dark:via-transparent dark:to-transparent" />
+      <div
+        className={`relative z-10 flex min-h-[56px] grow items-center gap-4 rounded-[10px] bg-white px-4 dark:bg-[#101010] ${otherClasses}`}
+      >
+        <Image
+          src={imgSrc}
+          width={24}
+          height={24}
+          alt="Search"
+          className="cursor-pointer"
+        />
 
-      <Input
-        id="homesearch"
-        type="text"
-        placeholder={placeholder}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-none"
-      />
+        <Input
+          id="homesearch"
+          type="text"
+          placeholder={placeholder}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="no-focus border-none font-medium shadow-none outline-none placeholder:text-light-500 dark:placeholder:text-light-400"
+        />
 
-      {searchQuery && (
-        <button
-          onClick={() => setSearchQuery("")}
-          className="text-dark400_light700 ml-5 transition"
-        >
-          ✖
-        </button>
-      )}
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery("")}
+            className="text-dark400_light700 ml-5 transition"
+          >
+            ✖
+          </button>
+        )}
+      </div>
     </div>
   );
 };
